@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Stackwise</title>
+  <meta name="description" content="Your Stackwise dashboard. Forecast demand, manage inventory, reduce stockouts." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ---- Dashboard-specific styles ---- */
+    .dash-loading {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 60vh; text-align: center;
+    }
+    .dash-loading__spinner {
+      width: 36px; height: 36px; margin: 0 auto 16px;
+      border: 3px solid var(--bg-sand); border-top-color: var(--accent-olive);
+      border-radius: 50%; animation: dashSpin 0.7s linear infinite;
+    }
+    @keyframes dashSpin { to { transform: rotate(360deg); } }
+    .dash-loading__text { font-size: 15px; color: var(--text-secondary); }
+
+    .dash-content { padding: calc(64px + var(--s-7)) 0 var(--s-8); }
+    .dash-header { margin-bottom: var(--s-6); }
+    .dash-header__greeting {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(28px, 4vw, 40px); font-weight: 400;
+      line-height: 1.15; letter-spacing: -0.02em;
+      color: var(--text-primary); margin-bottom: var(--s-2);
+    }
+    .dash-header__sub { font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
+
+    .dash-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--s-4); margin-bottom: var(--s-6); }
+    .dash-card {
+      background: var(--bg-warm-white); border: 1px solid var(--bg-sand);
+      border-radius: var(--radius-card); padding: var(--s-5);
+      transition: box-shadow 0.2s ease;
+    }
+    .dash-card:hover { box-shadow: 0 4px 16px rgba(26,25,21,0.06); }
+    .dash-card__icon { width: 40px; height: 40px; margin-bottom: var(--s-3); display: flex; align-items: center; justify-content: center; background: rgba(92,107,79,0.08); border-radius: 8px; color: var(--accent-olive); }
+    .dash-card__title { font-size: 16px; font-weight: 600; margin-bottom: var(--s-1); color: var(--text-primary); }
+    .dash-card__desc { font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-bottom: var(--s-3); }
+    .dash-card__action {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 14px; font-weight: 500; color: var(--accent-olive);
+      text-decoration: none; border: none; background: none; cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    .dash-card__action:hover { color: var(--accent-hover); }
+
+    /* Subscription status */
+    .dash-sub {
+      background: var(--bg-warm-white); border: 1px solid var(--bg-sand);
+      border-radius: var(--radius-card); padding: var(--s-5);
+      margin-bottom: var(--s-6);
+      display: flex; align-items: center; justify-content: space-between; gap: var(--s-4);
+      flex-wrap: wrap;
+    }
+    .dash-sub__info { flex: 1; min-width: 200px; }
+    .dash-sub__label { font-size: 13px; font-weight: 500; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.05em; }
+    .dash-sub__plan { font-size: 18px; font-weight: 600; color: var(--text-primary); margin-top: 4px; }
+    .dash-sub__detail { font-size: 14px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* Paywall overlay */
+    .paywall {
+      text-align: center; padding: var(--s-8) var(--s-5);
+      max-width: 520px; margin: 0 auto;
+    }
+    .paywall__icon {
+      width: 64px; height: 64px; margin: 0 auto var(--s-4);
+      background: rgba(92,107,79,0.08); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--accent-olive);
+    }
+    .paywall__title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 28px; font-weight: 400; margin-bottom: var(--s-3);
+      color: var(--text-primary);
+    }
+    .paywall__desc { font-size: 16px; color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--s-5); }
+
+    .paywall__plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--s-4); margin-bottom: var(--s-4); text-align: left; }
+    .paywall__plan {
+      background: var(--bg-warm-white); border: 1px solid var(--bg-sand);
+      border-radius: var(--radius-card); padding: var(--s-4);
+      transition: border-color 0.2s ease;
+    }
+    .paywall__plan:hover { border-color: var(--accent-olive); }
+    .paywall__plan-name { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+    .paywall__plan-price { font-size: 28px; font-weight: 700; color: var(--text-primary); margin: 8px 0 4px; }
+    .paywall__plan-price span { font-size: 14px; font-weight: 400; color: var(--text-secondary); }
+    .paywall__plan-features { list-style: none; padding: 0; margin: 12px 0 16px; }
+    .paywall__plan-features li {
+      font-size: 14px; color: var(--text-secondary); padding: 3px 0 3px 20px;
+      position: relative;
+    }
+    .paywall__plan-features li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-olive); font-weight: 600; }
+
+    .paywall__plan-btn {
+      width: 100%; padding: 10px 16px; font-size: 14px; font-weight: 500;
+      border-radius: 8px; cursor: pointer; transition: background 0.15s ease;
+      border: none;
+    }
+    .paywall__plan-btn--primary { background: var(--accent-olive); color: #FAF7F4; }
+    .paywall__plan-btn--primary:hover { background: var(--accent-hover); }
+    .paywall__plan-btn--outline { background: transparent; color: var(--accent-olive); border: 1px solid var(--accent-olive); }
+    .paywall__plan-btn--outline:hover { background: rgba(92,107,79,0.05); }
+
+    .paywall__demo-link { font-size: 14px; color: var(--text-secondary); }
+    .paywall__demo-link a { color: var(--accent-olive); text-decoration: underline; }
+
+    .checkout-success-banner {
+      background: #EEF1EB; border: 1px solid #5C6B4F; border-radius: 8px;
+      padding: 16px 20px; margin-bottom: var(--s-5);
+      display: flex; align-items: center; gap: 10px; font-size: 14px; color: #4A5840;
+    }
+    .checkout-success-banner svg { flex-shrink: 0; }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html" class="nav__logo" aria-label="Stackwise home">
+        <span class="nav__logo-text">Stackwise</span>
+      </a>
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="index.html#how-it-works" class="nav__link">How it works</a>
+        <a href="index.html#features" class="nav__link">Features</a>
+        <a href="index.html#pricing" class="nav__link">Pricing</a>
+      </nav>
+      <div class="nav__actions">
+        <div class="nav__auth-out" id="nav-auth-out" hidden>
+          <a href="auth.html" class="btn btn--outline btn--sm">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary btn--sm">Start free</a>
+        </div>
+        <div class="nav__auth-in" id="nav-auth-in" hidden>
+          <span class="nav__user-email" id="nav-user-email" style="font-size:13px;color:var(--text-secondary);margin-right:8px;"></span>
+          <a href="try.html" class="btn btn--secondary btn--sm">Try demo</a>
+          <button class="btn btn--ghost btn--sm" id="btn-header-logout">Log out</button>
+        </div>
+      </div>
+      <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+      <nav class="nav__mobile-links">
+        <a href="index.html#how-it-works" class="nav__mobile-link">How it works</a>
+        <a href="index.html#features" class="nav__mobile-link">Features</a>
+        <a href="index.html#pricing" class="nav__mobile-link">Pricing</a>
+        <div class="nav__mobile-auth" id="mobile-auth-out" hidden style="margin-top:16px">
+          <a href="auth.html" class="btn btn--outline nav__mobile-auth-btn">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary nav__mobile-auth-btn" style="margin-top:8px">Start free</a>
+        </div>
+        <div class="nav__mobile-auth" id="mobile-auth-in" hidden style="margin-top:16px">
+          <button class="btn btn--ghost nav__mobile-auth-btn" id="btn-mobile-logout">Log out</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Loading state -->
+    <div class="dash-loading" id="dash-loading">
+      <div>
+        <div class="dash-loading__spinner"></div>
+        <p class="dash-loading__text">Loading your dashboard…</p>
+      </div>
+    </div>
+
+    <!-- Dashboard content (hidden until loaded) -->
+    <div class="dash-content container" id="dash-content" hidden>
+
+      <!-- Checkout success banner -->
+      <div class="checkout-success-banner" id="checkout-success" hidden>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Payment successful! Your subscription is now active.</span>
+      </div>
+
+      <div class="dash-header">
+        <h1 class="dash-header__greeting" id="dash-greeting">Welcome back</h1>
+        <p class="dash-header__sub" id="dash-sub-text">Here's your Stackwise workspace.</p>
+      </div>
+
+      <!-- Subscription status -->
+      <div class="dash-sub" id="dash-sub-panel">
+        <div class="dash-sub__info">
+          <div class="dash-sub__label">Current plan</div>
+          <div class="dash-sub__plan" id="dash-plan-name">Free</div>
+          <div class="dash-sub__detail" id="dash-plan-detail">Limited to sample data</div>
+        </div>
+        <a href="#paywall" class="btn btn--primary btn--sm" id="btn-upgrade-plan">Upgrade</a>
+        <a href="billing.html" class="btn btn--outline btn--sm" id="btn-manage-billing" style="display:none">Manage billing</a>
+      </div>
+
+      <!-- Quick actions -->
+      <div class="dash-cards" id="dash-actions">
+        <div class="dash-card">
+          <div class="dash-card__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          </div>
+          <div class="dash-card__title">Try with sample data</div>
+          <div class="dash-card__desc">See Stackwise in action with our built-in sample dataset. No upload required.</div>
+          <a href="try.html" class="dash-card__action">Open demo &rarr;</a>
+        </div>
+
+        <div class="dash-card" id="card-upload">
+          <div class="dash-card__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          </div>
+          <div class="dash-card__title">Upload your CSV</div>
+          <div class="dash-card__desc">Upload your own sales data to get personalized demand forecasts and reorder recommendations.</div>
+          <a href="try.html#upload" class="dash-card__action" id="btn-upload-csv">Upload file &rarr;</a>
+        </div>
+
+        <div class="dash-card" id="card-history">
+          <div class="dash-card__icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="dash-card__title">Saved reports</div>
+          <div class="dash-card__desc">Access your previously saved forecasts and reorder lists. Coming soon.</div>
+          <button class="dash-card__action" disabled style="opacity:0.5">Coming soon</button>
+        </div>
+      </div>
+
+      <!-- Paywall section (shown when no active subscription) -->
+      <div class="paywall" id="paywall" hidden>
+        <div class="paywall__icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h2 class="paywall__title">Upgrade to unlock</h2>
+        <p class="paywall__desc">Upload your own CSV data, save reports, and access all features with a Stackwise subscription.</p>
+
+        <div class="paywall__plans">
+          <div class="paywall__plan">
+            <div class="paywall__plan-name">Starter</div>
+            <div class="paywall__plan-price">$19<span>/mo</span></div>
+            <ul class="paywall__plan-features">
+              <li>Upload own CSV data</li>
+              <li>Up to 100 SKUs</li>
+              <li>30-day forecast</li>
+              <li>Export reorder list</li>
+            </ul>
+            <button class="paywall__plan-btn paywall__plan-btn--outline" data-plan="starter_monthly">Choose Starter</button>
+          </div>
+          <div class="paywall__plan" style="border-color: var(--accent-olive);">
+            <div class="paywall__plan-name">Growth</div>
+            <div class="paywall__plan-price">$59<span>/mo</span></div>
+            <ul class="paywall__plan-features">
+              <li>Everything in Starter</li>
+              <li>Up to 500 SKUs</li>
+              <li>60/90-day forecasts</li>
+              <li>Saved history</li>
+            </ul>
+            <button class="paywall__plan-btn paywall__plan-btn--primary" data-plan="growth_monthly">Choose Growth</button>
+          </div>
+          <div class="paywall__plan">
+            <div class="paywall__plan-name">Pro</div>
+            <div class="paywall__plan-price">$99<span>/mo</span></div>
+            <ul class="paywall__plan-features">
+              <li>Everything in Growth</li>
+              <li>Unlimited SKUs</li>
+              <li>Priority support</li>
+              <li>Multi-channel analytics</li>
+            </ul>
+            <button class="paywall__plan-btn paywall__plan-btn--outline" data-plan="pro_monthly">Choose Pro</button>
+          </div>
+        </div>
+
+        <p class="paywall__demo-link">Or <a href="try.html">try the free demo</a> with sample data first.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo" aria-label="Stackwise home"><span>Stackwise</span></a>
+        <p class="footer__tagline">Demand forecasting for small e-commerce.</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4 class="footer__col-title">Product</h4>
+          <a href="try.html" class="footer__link">Try Stackwise</a>
+          <a href="index.html#how-it-works" class="footer__link">How it works</a>
+          <a href="index.html#features" class="footer__link">Features</a>
+          <a href="index.html#pricing" class="footer__link">Pricing</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <p class="footer__copy">&copy; 2026 Stackwise. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="animations.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

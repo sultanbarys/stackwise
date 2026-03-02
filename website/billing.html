@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing — Stackwise</title>
+  <meta name="description" content="Manage your Stackwise subscription and billing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ---- Billing page styles ---- */
+    .billing-loading {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 60vh; text-align: center;
+    }
+    .billing-loading__spinner {
+      width: 36px; height: 36px; margin: 0 auto 16px;
+      border: 3px solid var(--bg-sand); border-top-color: var(--accent-olive);
+      border-radius: 50%; animation: billingSpin 0.7s linear infinite;
+    }
+    @keyframes billingSpin { to { transform: rotate(360deg); } }
+    .billing-loading__text { font-size: 15px; color: var(--text-secondary); }
+
+    .billing-content { padding: calc(64px + var(--s-7)) 0 var(--s-8); max-width: 720px; margin: 0 auto; }
+    .billing-header { margin-bottom: var(--s-6); }
+    .billing-header__title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(28px, 4vw, 40px); font-weight: 400;
+      line-height: 1.15; letter-spacing: -0.02em;
+      color: var(--text-primary); margin-bottom: var(--s-2);
+    }
+    .billing-header__sub { font-size: 16px; color: var(--text-secondary); line-height: 1.5; }
+
+    /* Current plan card */
+    .billing-plan-card {
+      background: var(--bg-warm-white); border: 1px solid var(--bg-sand);
+      border-radius: var(--radius-card); padding: var(--s-5);
+      margin-bottom: var(--s-5);
+    }
+    .billing-plan-card__label {
+      font-size: 13px; font-weight: 500; color: var(--text-tertiary);
+      text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+    }
+    .billing-plan-card__row {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--s-3);
+    }
+    .billing-plan-card__info { flex: 1; min-width: 200px; }
+    .billing-plan-card__name {
+      font-size: 22px; font-weight: 600; color: var(--text-primary); margin-bottom: 4px;
+    }
+    .billing-plan-card__status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 13px; font-weight: 500; padding: 3px 10px;
+      border-radius: 20px; margin-bottom: 4px;
+    }
+    .billing-plan-card__status--active { background: #EEF1EB; color: #4A5840; }
+    .billing-plan-card__status--free { background: var(--bg-sand); color: var(--text-secondary); }
+    .billing-plan-card__status--canceled { background: #FEF3F2; color: #B42318; }
+    .billing-plan-card__status--past_due { background: #FFFAEB; color: #B54708; }
+    .billing-plan-card__detail { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+    .billing-plan-card__actions { display: flex; gap: var(--s-2); flex-wrap: wrap; }
+
+    /* Success / cancel banners */
+    .billing-banner {
+      border-radius: 8px; padding: 16px 20px; margin-bottom: var(--s-5);
+      display: flex; align-items: center; gap: 10px; font-size: 14px;
+    }
+    .billing-banner--success { background: #EEF1EB; border: 1px solid #5C6B4F; color: #4A5840; }
+    .billing-banner--cancel { background: var(--bg-sand); border: 1px solid var(--bg-sand); color: var(--text-secondary); }
+    .billing-banner--error { background: #FEF3F2; border: 1px solid #FDA29B; color: #B42318; }
+    .billing-banner svg { flex-shrink: 0; }
+
+    /* Plans grid (for upgrade) */
+    .billing-plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--s-4); margin-bottom: var(--s-5); }
+    .billing-plan {
+      background: var(--bg-warm-white); border: 1px solid var(--bg-sand);
+      border-radius: var(--radius-card); padding: var(--s-4);
+      transition: border-color 0.2s ease;
+    }
+    .billing-plan:hover { border-color: var(--accent-olive); }
+    .billing-plan--current { border-color: var(--accent-olive); background: rgba(92,107,79,0.03); }
+    .billing-plan__name { font-size: 16px; font-weight: 600; color: var(--text-primary); }
+    .billing-plan__price { font-size: 28px; font-weight: 700; color: var(--text-primary); margin: 8px 0 4px; }
+    .billing-plan__price span { font-size: 14px; font-weight: 400; color: var(--text-secondary); }
+    .billing-plan__features { list-style: none; padding: 0; margin: 12px 0 16px; }
+    .billing-plan__features li {
+      font-size: 14px; color: var(--text-secondary); padding: 3px 0 3px 20px;
+      position: relative;
+    }
+    .billing-plan__features li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-olive); font-weight: 600; }
+    .billing-plan__btn {
+      width: 100%; padding: 10px 16px; font-size: 14px; font-weight: 500;
+      border-radius: 8px; cursor: pointer; transition: background 0.15s ease;
+      border: none;
+    }
+    .billing-plan__btn--primary { background: var(--accent-olive); color: #FAF7F4; }
+    .billing-plan__btn--primary:hover { background: var(--accent-hover); }
+    .billing-plan__btn--outline { background: transparent; color: var(--accent-olive); border: 1px solid var(--accent-olive); }
+    .billing-plan__btn--outline:hover { background: rgba(92,107,79,0.05); }
+    .billing-plan__btn:disabled { opacity: 0.5; cursor: default; }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <!-- NAVIGATION -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html" class="nav__logo" aria-label="Stackwise home">
+        <span class="nav__logo-text">Stackwise</span>
+      </a>
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="app.html" class="nav__link">Dashboard</a>
+        <a href="try.html" class="nav__link">Try demo</a>
+        <a href="index.html#pricing" class="nav__link">Pricing</a>
+      </nav>
+      <div class="nav__actions">
+        <div class="nav__auth-out" id="nav-auth-out" hidden>
+          <a href="auth.html" class="btn btn--outline btn--sm">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary btn--sm">Start free</a>
+        </div>
+        <div class="nav__auth-in" id="nav-auth-in" hidden>
+          <span class="nav__user-email" id="nav-user-email" style="font-size:13px;color:var(--text-secondary);margin-right:8px;"></span>
+          <a href="app.html" class="btn btn--secondary btn--sm">Dashboard</a>
+          <button class="btn btn--ghost btn--sm" id="btn-header-logout">Log out</button>
+        </div>
+      </div>
+      <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+      <nav class="nav__mobile-links">
+        <a href="app.html" class="nav__mobile-link">Dashboard</a>
+        <a href="try.html" class="nav__mobile-link">Try demo</a>
+        <a href="index.html#pricing" class="nav__mobile-link">Pricing</a>
+        <div class="nav__mobile-auth" id="mobile-auth-out" hidden style="margin-top:16px">
+          <a href="auth.html" class="btn btn--outline nav__mobile-auth-btn">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary nav__mobile-auth-btn" style="margin-top:8px">Start free</a>
+        </div>
+        <div class="nav__mobile-auth" id="mobile-auth-in" hidden style="margin-top:16px">
+          <button class="btn btn--ghost nav__mobile-auth-btn" id="btn-mobile-logout">Log out</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Loading state -->
+    <div class="billing-loading" id="billing-loading">
+      <div>
+        <div class="billing-loading__spinner"></div>
+        <p class="billing-loading__text">Loading billing information…</p>
+      </div>
+    </div>
+
+    <!-- Billing content (hidden until loaded) -->
+    <div class="billing-content container" id="billing-content" hidden>
+
+      <!-- Success banner -->
+      <div class="billing-banner billing-banner--success" id="billing-success" hidden>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M6 10l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Payment successful! Your subscription is now active.</span>
+      </div>
+
+      <!-- Cancel banner -->
+      <div class="billing-banner billing-banner--cancel" id="billing-canceled" hidden>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13" r="0.75" fill="currentColor"/></svg>
+        <span>Checkout was canceled. You can try again any time.</span>
+      </div>
+
+      <!-- Error banner (only shown when there's a real error) -->
+      <div class="billing-banner billing-banner--error" id="billing-error" hidden>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13" r="0.75" fill="currentColor"/></svg>
+        <span id="billing-error-text"></span>
+      </div>
+
+      <div class="billing-header">
+        <h1 class="billing-header__title">Billing</h1>
+        <p class="billing-header__sub">Manage your Stackwise subscription</p>
+      </div>
+
+      <!-- Current plan -->
+      <div class="billing-plan-card" id="billing-plan-card">
+        <div class="billing-plan-card__label">Current plan</div>
+        <div class="billing-plan-card__row">
+          <div class="billing-plan-card__info">
+            <div class="billing-plan-card__name" id="billing-plan-name">Free</div>
+            <div id="billing-status-badge"></div>
+            <div class="billing-plan-card__detail" id="billing-plan-detail">You're on the free plan. Upgrade to unlock all features.</div>
+          </div>
+          <div class="billing-plan-card__actions" id="billing-actions">
+            <!-- Dynamically filled -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Plans section (shown for non-active users) -->
+      <div id="billing-plans-section">
+        <h2 style="font-family:'DM Serif Display',Georgia,serif; font-size:24px; font-weight:400; color:var(--text-primary); margin-bottom:var(--s-4);">Choose a plan</h2>
+        <div class="billing-plans">
+          <div class="billing-plan">
+            <div class="billing-plan__name">Starter</div>
+            <div class="billing-plan__price">$19<span>/mo</span></div>
+            <ul class="billing-plan__features">
+              <li>Upload own CSV data</li>
+              <li>Up to 100 SKUs</li>
+              <li>30-day forecast</li>
+              <li>Export reorder list</li>
+            </ul>
+            <button class="billing-plan__btn billing-plan__btn--outline" data-plan="starter_monthly" id="btn-plan-starter">Choose Starter</button>
+          </div>
+          <div class="billing-plan">
+            <div class="billing-plan__name">Growth</div>
+            <div class="billing-plan__price">$59<span>/mo</span></div>
+            <ul class="billing-plan__features">
+              <li>Everything in Starter</li>
+              <li>Up to 500 SKUs</li>
+              <li>60/90-day forecasts</li>
+              <li>Saved history</li>
+            </ul>
+            <button class="billing-plan__btn billing-plan__btn--primary" data-plan="growth_monthly" id="btn-plan-growth">Choose Growth</button>
+          </div>
+          <div class="billing-plan">
+            <div class="billing-plan__name">Pro</div>
+            <div class="billing-plan__price">$99<span>/mo</span></div>
+            <ul class="billing-plan__features">
+              <li>Everything in Growth</li>
+              <li>Unlimited SKUs</li>
+              <li>Priority support</li>
+              <li>Multi-channel analytics</li>
+            </ul>
+            <button class="billing-plan__btn billing-plan__btn--outline" data-plan="pro_monthly" id="btn-plan-pro">Choose Pro</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo" aria-label="Stackwise home"><span>Stackwise</span></a>
+        <p class="footer__tagline">Demand forecasting for small e-commerce.</p>
+      </div>
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4 class="footer__col-title">Product</h4>
+          <a href="try.html" class="footer__link">Try Stackwise</a>
+          <a href="index.html#how-it-works" class="footer__link">How it works</a>
+          <a href="index.html#features" class="footer__link">Features</a>
+          <a href="index.html#pricing" class="footer__link">Pricing</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer__bottom">
+      <p class="footer__copy">&copy; 2026 Stackwise. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="animations.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="billing.js"></script>
+</body>
+</html>

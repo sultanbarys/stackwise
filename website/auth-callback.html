@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Authenticating… — Stackwise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #F5F0EB; color: #1A1915;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; text-align: center;
+    }
+    .cb-card {
+      max-width: 400px; padding: 48px 32px;
+      background: #fff; border-radius: 12px;
+      border: 1px solid #E0DAD3;
+      box-shadow: 0 4px 16px rgba(26,25,21,0.06);
+    }
+    .cb-logo { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 24px; color: #1A1915; }
+    .cb-spinner {
+      width: 32px; height: 32px; margin: 0 auto 16px;
+      border: 3px solid #E0DAD3; border-top-color: #5C6B4F;
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .cb-text { font-size: 15px; color: #6B6560; line-height: 1.5; }
+    .cb-error { color: #B85C3A; margin-top: 16px; font-size: 14px; display: none; }
+    .cb-link { color: #5C6B4F; text-decoration: underline; margin-top: 16px; display: inline-block; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="cb-card">
+    <div class="cb-logo">Stackwise</div>
+    <div class="cb-spinner" id="spinner"></div>
+    <p class="cb-text" id="status-text">Verifying your account…</p>
+    <p class="cb-error" id="error-text"></p>
+    <a href="auth.html" class="cb-link" id="back-link" style="display:none">Back to sign in</a>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var statusText = document.getElementById('status-text');
+    var errorText  = document.getElementById('error-text');
+    var spinner    = document.getElementById('spinner');
+    var backLink   = document.getElementById('back-link');
+
+    function showError(msg) {
+      spinner.style.display = 'none';
+      statusText.textContent = 'Something went wrong';
+      errorText.textContent = msg;
+      errorText.style.display = 'block';
+      backLink.style.display = 'inline-block';
+    }
+
+    function redirectToApp() {
+      window.location.replace('try.html');
+    }
+
+    if (!window.supabaseClient) {
+      showError('Authentication service unavailable.');
+      return;
+    }
+
+    // Supabase v2 handles hash fragments automatically on getSession()
+    // The hash may contain access_token, refresh_token, type=recovery, etc.
+    window.supabaseClient.auth.getSession().then(function (result) {
+      if (result.data && result.data.session) {
+        statusText.textContent = 'Success! Redirecting…';
+
+        // Check if this is a password recovery flow
+        var hash = window.location.hash;
+        if (hash.indexOf('type=recovery') !== -1) {
+          window.location.replace('auth.html?tab=reset');
+          return;
+        }
+
+        setTimeout(redirectToApp, 500);
+      } else {
+        // No session yet — try exchanging code if present
+        var params = new URLSearchParams(window.location.search);
+        var code = params.get('code');
+        if (code) {
+          window.supabaseClient.auth.exchangeCodeForSession(code).then(function (result) {
+            if (result.error) {
+              showError(result.error.message);
+              return;
+            }
+            statusText.textContent = 'Success! Redirecting…';
+            setTimeout(redirectToApp, 500);
+          }).catch(function () {
+            showError('Failed to verify. Please try again.');
+          });
+        } else {
+          showError('No authentication data found.');
+        }
+      }
+    }).catch(function () {
+      showError('Authentication failed. Please try again.');
+    });
+
+    // Also listen for auth state change (catches hash-based tokens)
+    window.supabaseClient.auth.onAuthStateChange(function (event, session) {
+      if (event === 'SIGNED_IN' && session) {
+        statusText.textContent = 'Success! Redirecting…';
+        setTimeout(redirectToApp, 500);
+      }
+      if (event === 'PASSWORD_RECOVERY') {
+        window.location.replace('auth.html?tab=reset');
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

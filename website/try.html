@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Try Stackwise — See Your Forecast in Under a Minute</title>
+  <meta name="description" content="Try Stackwise with sample data or upload your own sales CSV. No account required. See demand forecasts, SKU-level risk, and reorder timing." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="try-styles.css" />
+</head>
+<body>
+  <div id="toast-container" class="toast-container"></div>
+  <a href="#main" class="skip-link">Skip to content</a>
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="index.html" class="nav__logo" aria-label="Stackwise home">
+        <span class="nav__logo-text">Stackwise</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="index.html#how-it-works" class="nav__link">How it works</a>
+        <a href="index.html#features" class="nav__link">Features</a>
+        <a href="#pricing" class="nav__link">Pricing</a>
+        <a href="index.html#faq" class="nav__link">FAQ</a>
+      </nav>
+
+      <div class="nav__actions">
+        <div class="nav__auth-out" id="nav-auth-out">
+          <a href="auth.html" class="btn btn--outline btn--sm">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary btn--sm">Start free</a>
+        </div>
+        <div class="nav__auth-in" id="nav-auth-in" hidden>
+          <span class="nav__user-pill" id="nav-user-email"></span>
+          <a href="app.html" class="btn btn--secondary btn--sm">Dashboard</a>
+          <button class="btn btn--ghost btn--sm" id="btn-header-logout">Log out</button>
+        </div>
+      </div>
+
+      <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+      <nav class="nav__mobile-links">
+        <a href="index.html#how-it-works" class="nav__mobile-link">How it works</a>
+        <a href="index.html#features" class="nav__mobile-link">Features</a>
+        <a href="#pricing" class="nav__mobile-link">Pricing</a>
+        <a href="index.html#faq" class="nav__mobile-link">FAQ</a>
+        <div class="nav__mobile-auth" id="mobile-auth-out" style="margin-top:16px">
+          <a href="auth.html" class="btn btn--outline nav__mobile-auth-btn">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary nav__mobile-auth-btn" style="margin-top:8px">Start free</a>
+        </div>
+        <div class="nav__mobile-auth" id="mobile-auth-in" hidden style="margin-top:16px">
+          <span class="nav__user-pill nav__mobile-pill" id="mobile-user-email"></span>
+          <a href="app.html" class="btn btn--secondary nav__mobile-auth-btn" style="margin-top:8px">Dashboard</a>
+          <button class="btn btn--ghost nav__mobile-auth-btn" id="btn-mobile-logout" style="margin-top:8px">Log out</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================
+         SECTION A — TRY HERO / CTA BLOCK
+         ============================================ -->
+    <section class="try-hero">
+      <div class="container try-hero__inner">
+        <div class="try-hero__content anim-fade">
+          <p class="section-label">Try Stackwise</p>
+          <h1 class="try-hero__headline">See what your sales data can tell you</h1>
+          <p class="try-hero__sub">
+            Run a demand forecast on sample data or upload your own CSV.
+            No account, no setup, no commitment.
+          </p>
+        </div>
+
+        <!-- ============================================
+             SECTION B — STEP-BY-STEP FLOW
+             ============================================ -->
+        <div class="try-steps anim-fade" id="upload">
+          <div class="try-steps__header">
+            <h2 class="try-steps__title">How the demo works</h2>
+            <p class="try-steps__sub">Three steps. Results appear on this page.</p>
+          </div>
+
+          <ol class="try-steps__list">
+            <li class="try-steps__item">
+              <span class="try-steps__number mono">01</span>
+              <div>
+                <h3 class="try-steps__item-title">Upload your sales CSV</h3>
+                <p class="try-steps__item-desc">Use our sample dataset to explore, or upload your own sales history CSV.</p>
+              </div>
+            </li>
+            <li class="try-steps__item">
+              <span class="try-steps__number mono">02</span>
+              <div>
+                <h3 class="try-steps__item-title">View your demand forecast</h3>
+                <p class="try-steps__item-desc">See SKU-level demand projections and velocity metrics based on historical sales.</p>
+              </div>
+            </li>
+            <li class="try-steps__item">
+              <span class="try-steps__number mono">03</span>
+              <div>
+                <h3 class="try-steps__item-title">Optionally add stock levels</h3>
+                <p class="try-steps__item-desc">Provide current stock to unlock risk assessment, stock coverage, and reorder suggestions.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         DATA INPUT — Demo / Upload Chooser
+         ============================================ -->
+    <section class="try-input" id="try-input">
+      <div class="container">
+        <div class="try-input__chooser anim-fade">
+          <div class="try-input__option try-input__option--active" data-mode="demo">
+            <div class="try-input__option-header">
+              <div class="try-input__radio" aria-hidden="true">
+                <span class="try-input__radio-dot"></span>
+              </div>
+              <div>
+                <h3 class="try-input__option-title">Try with sample data</h3>
+                <p class="try-input__option-desc">Explore Stackwise using a pre-loaded dataset of 12 SKUs across 6 months.</p>
+              </div>
+            </div>
+            <button class="btn btn--primary try-input__btn" id="btn-demo">
+              Run demo forecast
+            </button>
+          </div>
+
+          <div class="try-input__divider">
+            <span class="try-input__divider-text">or</span>
+          </div>
+
+          <div class="try-input__option" data-mode="upload">
+            <div class="try-input__option-header">
+              <div class="try-input__radio" aria-hidden="true">
+                <span class="try-input__radio-dot"></span>
+              </div>
+              <div>
+                <h3 class="try-input__option-title">Upload your own CSV</h3>
+                <p class="try-input__option-desc">Use your real sales history. No account required.</p>
+              </div>
+            </div>
+
+            <!-- Upload area — hidden until this option is selected -->
+            <div class="try-upload" id="try-upload">
+              <div class="try-upload__dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload CSV file">
+                <div class="try-upload__dropzone-content">
+                  <svg class="try-upload__icon" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+                    <rect x="8" y="6" width="24" height="28" rx="3" stroke="currentColor" stroke-width="1.5"/>
+                    <path d="M20 16V26M16 20L20 16L24 20" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <p class="try-upload__dropzone-label">Drag your CSV here or <span class="try-upload__browse">browse</span></p>
+                  <p class="try-upload__dropzone-hint">CSV files only. Max 5 MB.</p>
+                </div>
+                <input type="file" id="csv-input" accept=".csv" class="try-upload__file-input" aria-label="Select CSV file" />
+              </div>
+
+              <!-- File selected state -->
+              <div class="try-upload__file-info" id="file-info" hidden>
+                <div class="try-upload__file-details">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <rect x="4" y="2" width="12" height="16" rx="2" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                    <line x1="7" y1="8" x2="13" y2="8" stroke="var(--text-tertiary)" stroke-width="1" stroke-linecap="round"/>
+                    <line x1="7" y1="11" x2="12" y2="11" stroke="var(--text-tertiary)" stroke-width="1" stroke-linecap="round"/>
+                  </svg>
+                  <span class="try-upload__file-name" id="file-name">—</span>
+                  <button class="try-upload__file-remove" id="file-remove" aria-label="Remove file">&times;</button>
+                </div>
+              </div>
+
+              <!-- Error state -->
+              <div class="try-upload__error" id="upload-error" hidden role="alert">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <circle cx="8" cy="8" r="7" stroke="var(--accent-rust)" stroke-width="1.5"/>
+                  <line x1="8" y1="5" x2="8" y2="9" stroke="var(--accent-rust)" stroke-width="1.5" stroke-linecap="round"/>
+                  <circle cx="8" cy="11.5" r="0.75" fill="var(--accent-rust)"/>
+                </svg>
+                <span class="try-upload__error-text" id="upload-error-text"></span>
+              </div>
+
+              <button class="btn btn--primary try-input__btn" id="btn-upload" disabled>
+                Run forecast on my data
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================
+             SECTION D — CSV FORMAT GUIDANCE
+             ============================================ -->
+        <div class="try-csv-guide anim-fade" id="csv-guide">
+          <details class="try-csv-guide__details">
+            <summary class="try-csv-guide__summary">
+              CSV format guidance
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="try-csv-guide__content">
+              <p class="try-csv-guide__intro">
+                Your sales CSV should include columns for dates, product identifiers, and quantities.
+                Below is the recommended format. Column order does not matter.
+              </p>
+
+              <h4 class="try-csv-guide__schema-title">Sales CSV columns</h4>
+              <div class="try-csv-guide__table-wrap">
+                <table class="try-csv-guide__table">
+                  <thead>
+                    <tr>
+                      <th>Column</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                      <th>Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>date</code></td>
+                      <td><span class="try-csv-guide__required">Required</span></td>
+                      <td>Order or sale date</td>
+                      <td><span class="mono">2025-09-14</span></td>
+                    </tr>
+                    <tr>
+                      <td><code>sku</code></td>
+                      <td><span class="try-csv-guide__required">Required</span></td>
+                      <td>Unique product identifier</td>
+                      <td><span class="mono">BK-1042</span></td>
+                    </tr>
+                    <tr>
+                      <td><code>quantity_sold</code></td>
+                      <td><span class="try-csv-guide__required">Required</span></td>
+                      <td>Units sold in this row</td>
+                      <td><span class="mono">3</span></td>
+                    </tr>
+                    <tr>
+                      <td><code>product_name</code></td>
+                      <td><span class="try-csv-guide__optional">Optional</span></td>
+                      <td>Human-readable product name</td>
+                      <td>Ceramic Mug — Sage</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <h4 class="try-csv-guide__schema-title">Stock CSV columns (optional)</h4>
+              <p class="try-csv-guide__intro">
+                To enable risk assessment and reorder suggestions, upload a separate stock CSV
+                or include a <code>current_stock</code> column in your sales CSV. If provided via a separate file,
+                the stock CSV should contain:
+              </p>
+              <div class="try-csv-guide__table-wrap">
+                <table class="try-csv-guide__table">
+                  <thead>
+                    <tr>
+                      <th>Column</th>
+                      <th>Required</th>
+                      <th>Description</th>
+                      <th>Example</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>sku</code></td>
+                      <td><span class="try-csv-guide__required">Required</span></td>
+                      <td>Must match SKUs in sales CSV</td>
+                      <td><span class="mono">BK-1042</span></td>
+                    </tr>
+                    <tr>
+                      <td><code>current_stock</code></td>
+                      <td><span class="try-csv-guide__required">Required</span></td>
+                      <td>Units currently in inventory</td>
+                      <td><span class="mono">120</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="try-csv-guide__example">
+                <h4 class="try-csv-guide__schema-title">Example sales CSV</h4>
+                <pre class="try-csv-guide__code"><code>date,sku,quantity_sold,product_name
+2025-09-14,BK-1042,3,Ceramic Mug — Sage
+2025-09-14,LT-0887,1,Linen Tote — Natural
+2025-09-15,BK-1042,5,Ceramic Mug — Sage
+2025-09-15,CN-2215,2,Soy Candle — Cedar</code></pre>
+              </div>
+
+              <div class="try-csv-guide__example">
+                <h4 class="try-csv-guide__schema-title">Example stock CSV (optional)</h4>
+                <pre class="try-csv-guide__code"><code>sku,current_stock
+BK-1042,120
+LT-0887,45
+CN-2215,88</code></pre>
+              </div>
+
+              <p class="try-csv-guide__note">
+                Sales CSV schema is recommended, not enforced. Stackwise will attempt to map common column names
+                (e.g., "order_date", "product_id", "qty") automatically. Stock data is entirely optional.
+                If no stock is provided, forecasts and velocity metrics are still generated — risk and reorder
+                suggestions will not appear.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         RESULTS — Forecast Output
+         (Hidden by default, shown after demo/upload)
+         ============================================ -->
+    <section class="try-results" id="try-results" hidden>
+      <div class="guest-overlay" id="guest-overlay" hidden>
+        <div class="guest-overlay__card">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <rect x="10" y="20" width="28" height="20" rx="4" stroke="var(--accent-olive)" stroke-width="2"/>
+            <path d="M16 20V14a8 8 0 1 1 16 0v6" stroke="var(--accent-olive)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3 class="guest-overlay__title">Create a free account to unlock</h3>
+          <p class="guest-overlay__desc">Sign up to interact with the dashboard, save forecasts, and export data.</p>
+          <button class="btn btn--primary btn--lg" id="btn-overlay-signup">Start free</button>
+          <p class="guest-overlay__note">No credit card required</p>
+        </div>
+      </div>
+      <div class="upgrade-banner" id="upgrade-banner" hidden>
+        <div class="upgrade-banner__inner">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M10 2L13 8H18L14 12L15.5 18L10 14.5L4.5 18L6 12L2 8H7L10 2Z" stroke="var(--accent-terra)" stroke-width="1.5" fill="none"/>
+          </svg>
+          <p class="upgrade-banner__text">Upgrade to Pro to export, save scenarios, and use advanced features</p>
+          <button class="btn btn--primary btn--sm" id="btn-upgrade">Upgrade</button>
+        </div>
+      </div>
+      <div class="container">
+        <div class="try-results__header anim-fade">
+          <div class="try-results__header-left">
+            <h2 class="try-results__title">Your forecast</h2>
+            <p class="try-results__source" id="results-source">—</p>
+          </div>
+
+          <!-- Forecast horizon selector -->
+          <div class="try-results__horizon" role="radiogroup" aria-label="Forecast horizon">
+            <button class="try-results__horizon-btn try-results__horizon-btn--active" data-horizon="30" aria-pressed="true">30 days</button>
+            <button class="try-results__horizon-btn" data-horizon="60" aria-pressed="false">60 days</button>
+            <button class="try-results__horizon-btn" data-horizon="90" aria-pressed="false">90 days</button>
+          </div>
+        </div>
+
+        <!-- Mode indicator -->
+        <div class="try-results__mode-banner" id="mode-banner">
+          <div class="try-results__mode-icon" id="mode-icon">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="9" y1="6" x2="9" y2="10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="9" cy="12.5" r="0.75" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <p class="try-results__mode-title" id="mode-title">Forecast-only mode</p>
+            <p class="try-results__mode-desc" id="mode-desc">Forecast-only mode. Add stock to unlock reorder timing and risk.</p>
+          </div>
+        </div>
+
+        <!-- ============================================
+             STOCK INPUT — Tabbed 3-method interface
+             (shown after forecast runs)
+             ============================================ -->
+        <div class="stock-panel" id="stock-input-section" hidden>
+          <div class="stock-panel__header">
+            <div class="stock-panel__header-left">
+              <h3 class="stock-panel__title">Add stock levels</h3>
+              <p class="stock-panel__subtitle">Unlock stockout risk, reorder dates, and suggested quantities.</p>
+            </div>
+            <div class="stock-panel__status" id="stock-status" hidden>
+              <span class="stock-panel__status-dot" id="stock-status-dot"></span>
+              <span class="stock-panel__status-text" id="stock-status-text">0 of 0 SKUs filled</span>
+            </div>
+          </div>
+
+          <!-- CTA for demo users -->
+          <div class="stock-panel__demo-cta" id="stock-demo-cta">
+            <button class="btn btn--secondary btn--sm" id="btn-sample-stock">Load sample stock data</button>
+            <span class="stock-panel__demo-note">Pre-fills stock for all detected SKUs</span>
+          </div>
+
+          <!-- Tab navigation -->
+          <div class="stock-tabs" role="tablist" aria-label="Stock input method">
+            <button class="stock-tabs__tab stock-tabs__tab--active" role="tab" id="tab-editor" aria-controls="panel-editor" aria-selected="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.2"/><line x1="2" y1="5.5" x2="14" y2="5.5" stroke="currentColor" stroke-width="1"/><line x1="6" y1="5.5" x2="6" y2="14" stroke="currentColor" stroke-width="1"/></svg>
+              Edit in table
+            </button>
+            <button class="stock-tabs__tab" role="tab" id="tab-paste" aria-controls="panel-paste" aria-selected="false">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="4" y="1" width="9" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="3" width="9" height="12" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="var(--bg-warm-white)"/></svg>
+              Paste
+            </button>
+            <button class="stock-tabs__tab" role="tab" id="tab-csv" aria-controls="panel-csv" aria-selected="false">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M10 1H4a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V5l-4-4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="10 1 10 5 14 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Upload CSV
+            </button>
+          </div>
+
+          <!-- ===== Tab Panel 1: In-App Editor ===== -->
+          <div class="stock-tabs__panel stock-tabs__panel--active" role="tabpanel" id="panel-editor" aria-labelledby="tab-editor">
+            <div class="stock-editor">
+              <div class="stock-editor__toolbar">
+                <div class="stock-editor__actions">
+                  <button class="btn btn--ghost btn--xs" id="btn-set-default" title="Set all blank fields to 0">Set blanks to 0</button>
+                  <button class="btn btn--ghost btn--xs" id="btn-clear-stock" title="Clear all stock values">Clear all</button>
+                </div>
+                <p class="stock-editor__hint">Type values or paste a column from your spreadsheet.</p>
+              </div>
+              <div class="stock-editor__table-wrap">
+                <table class="stock-editor__table" id="stock-editor-table">
+                  <thead>
+                    <tr>
+                      <th>SKU</th>
+                      <th>Product</th>
+                      <th class="stock-editor__th-stock">Current stock</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stock-editor-body">
+                    <!-- Populated by JS with editable inputs -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="stock-editor__footer">
+                <button class="btn btn--primary btn--sm" id="btn-apply-editor" disabled>Apply stock levels</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Tab Panel 2: Copy-Paste Quick Input ===== -->
+          <div class="stock-tabs__panel" role="tabpanel" id="panel-paste" aria-labelledby="tab-paste" hidden>
+            <div class="stock-paste">
+              <label for="paste-textarea" class="stock-paste__label">Paste SKU and stock values</label>
+              <p class="stock-paste__hint">One SKU per line. Accepts: SKU,stock &bull; SKU&#9;stock &bull; SKU stock</p>
+              <div class="stock-paste__example">
+                <span class="stock-paste__example-label">Example:</span>
+                <code class="mono">BK-1042&#9;120<br>LT-0887&#9;45<br>CN-2215&#9;200</code>
+              </div>
+              <textarea class="stock-paste__textarea" id="paste-textarea" rows="6" placeholder="BK-1042  120&#10;LT-0887  45&#10;CN-2215  200" spellcheck="false"></textarea>
+              <div class="stock-paste__preview" id="paste-preview" hidden>
+                <div class="stock-paste__preview-header">
+                  <span class="stock-paste__preview-title">Preview</span>
+                  <span class="stock-paste__preview-count" id="paste-preview-count"></span>
+                </div>
+                <div class="stock-paste__preview-table-wrap">
+                  <table class="stock-paste__preview-table">
+                    <thead><tr><th>SKU</th><th>Stock</th><th>Status</th></tr></thead>
+                    <tbody id="paste-preview-body"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="stock-paste__error" id="paste-error" hidden role="alert">
+                <span class="stock-paste__error-text" id="paste-error-text"></span>
+              </div>
+              <div class="stock-paste__footer">
+                <button class="btn btn--primary btn--sm" id="btn-apply-paste" disabled>Apply pasted stock</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Tab Panel 3: CSV Upload with Column Mapping ===== -->
+          <div class="stock-tabs__panel" role="tabpanel" id="panel-csv" aria-labelledby="tab-csv" hidden>
+            <div class="stock-csv">
+              <!-- Dropzone -->
+              <div class="stock-csv__dropzone" id="stock-csv-dropzone" role="button" tabindex="0" aria-label="Upload stock CSV file">
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                  <path d="M20 2H8a4 4 0 00-4 4v20a4 4 0 004 4h16a4 4 0 004-4V10l-8-8z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <polyline points="20 2 20 10 28 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p class="stock-csv__dropzone-label">Drop your stock CSV here or <span class="stock-csv__browse">browse</span></p>
+                <p class="stock-csv__dropzone-hint">Any CSV with SKU and stock columns. Headers can be named anything.</p>
+                <input type="file" id="stock-csv-input" accept=".csv" class="stock-csv__file-input" aria-label="Select stock CSV file" />
+              </div>
+
+              <!-- File selected -->
+              <div class="stock-csv__file-info" id="stock-csv-file-info" hidden>
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="3" y="1.5" width="10" height="13" rx="1.5" stroke="var(--accent-olive)" stroke-width="1.2"/></svg>
+                <span class="stock-csv__file-name" id="stock-csv-file-name">—</span>
+                <button class="stock-csv__file-remove" id="stock-csv-file-remove" aria-label="Remove file">&times;</button>
+              </div>
+
+              <!-- Column mapping UI (shown after CSV is parsed) -->
+              <div class="stock-csv__mapping" id="stock-csv-mapping" hidden>
+                <h4 class="stock-csv__mapping-title">Map your columns</h4>
+                <p class="stock-csv__mapping-desc">Select which column contains SKU identifiers and which contains stock quantities.</p>
+                <div class="stock-csv__mapping-row">
+                  <div class="stock-csv__mapping-field">
+                    <label for="map-sku-col" class="stock-csv__mapping-label">SKU column</label>
+                    <select id="map-sku-col" class="stock-csv__mapping-select"><option value="">— Select —</option></select>
+                  </div>
+                  <div class="stock-csv__mapping-field">
+                    <label for="map-stock-col" class="stock-csv__mapping-label">Stock column</label>
+                    <select id="map-stock-col" class="stock-csv__mapping-select"><option value="">— Select —</option></select>
+                  </div>
+                </div>
+
+                <!-- Match rate display -->
+                <div class="stock-csv__match" id="stock-csv-match" hidden>
+                  <div class="stock-csv__match-bar">
+                    <div class="stock-csv__match-fill" id="stock-csv-match-fill"></div>
+                  </div>
+                  <p class="stock-csv__match-text" id="stock-csv-match-text"></p>
+                  <div class="stock-csv__unmatched" id="stock-csv-unmatched" hidden>
+                    <p class="stock-csv__unmatched-label">Missing SKUs (in sales data but not in stock file):</p>
+                    <p class="stock-csv__unmatched-list mono" id="stock-csv-unmatched-list"></p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="stock-csv__error" id="stock-csv-error" hidden role="alert">
+                <span class="stock-csv__error-text" id="stock-csv-error-text"></span>
+              </div>
+              <div class="stock-csv__footer" id="stock-csv-footer" hidden>
+                <button class="btn btn--primary btn--sm" id="btn-apply-csv" disabled>Apply mapped stock</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Success State (shown after stock is applied) ===== -->
+          <div class="stock-panel__success" id="stock-success" hidden>
+            <div class="stock-panel__success-content">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="10" cy="10" r="8.5" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                <path d="M6.5 10L9 12.5L13.5 7.5" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <p class="stock-panel__success-title" id="stock-success-title">Stock levels applied</p>
+                <p class="stock-panel__success-desc" id="stock-success-desc">—</p>
+              </div>
+              <button class="stock-panel__success-edit" id="stock-success-edit">Edit</button>
+              <button class="stock-panel__success-remove" id="stock-success-remove">Remove</button>
+            </div>
+          </div>
+
+          <!-- ===== Lead Time Input ===== -->
+          <div class="stock-panel__leadtime" id="leadtime-section" hidden>
+            <div class="stock-panel__leadtime-header">
+              <h4 class="stock-panel__leadtime-title">Lead time</h4>
+              <p class="stock-panel__leadtime-desc">How many days between placing and receiving an order. Used to calculate reorder dates.</p>
+            </div>
+            <div class="stock-panel__leadtime-controls">
+              <div class="stock-panel__leadtime-global">
+                <label for="leadtime-input" class="stock-panel__leadtime-label">Default lead time (days)</label>
+                <div class="stock-panel__leadtime-input-wrap">
+                  <input type="number" id="leadtime-input" class="stock-panel__leadtime-input" value="7" min="0" max="365" step="1" />
+                  <span class="stock-panel__leadtime-unit">days</span>
+                </div>
+              </div>
+              <label class="stock-panel__leadtime-toggle">
+                <input type="checkbox" id="leadtime-per-sku" />
+                <span class="stock-panel__leadtime-toggle-text">Set per SKU</span>
+              </label>
+            </div>
+            <div class="stock-panel__leadtime-persku" id="leadtime-persku-section" hidden>
+              <div class="stock-panel__leadtime-persku-wrap">
+                <table class="stock-panel__leadtime-table" id="leadtime-table">
+                  <thead><tr><th>SKU</th><th>Product</th><th>Lead time (days)</th></tr></thead>
+                  <tbody id="leadtime-table-body">
+                    <!-- Populated by JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== Safety Stock Buffer (now volatility-based) ===== -->
+          <div class="stock-panel__safety" id="safety-section" hidden>
+            <div class="stock-panel__safety-row">
+              <label for="service-level-select" class="stock-panel__safety-label">Service level</label>
+              <div class="stock-panel__safety-input-wrap">
+                <select id="service-level-select" class="stock-panel__safety-select">
+                  <option value="1.28">90%</option>
+                  <option value="1.65" selected>95%</option>
+                  <option value="2.33">99%</option>
+                </select>
+              </div>
+              <p class="stock-panel__safety-hint" title="Service level represents probability of not stocking out during lead time. 95% service level corresponds to z = 1.65. Higher service level increases safety stock.">safety_stock = z × σ_daily × √lead_time</p>
+            </div>
+            <div class="stock-panel__safety-row" style="margin-top: 12px;">
+              <label for="target-coverage-input" class="stock-panel__safety-label">Target coverage</label>
+              <div class="stock-panel__safety-input-wrap">
+                <input type="number" id="target-coverage-input" class="stock-panel__safety-input" value="30" min="1" max="180" step="1" />
+                <span class="stock-panel__safety-unit">days</span>
+              </div>
+              <p class="stock-panel__safety-hint">reorder_qty = ceil(max(0, <span id="target-coverage-echo">30</span>d × avg_daily + safety_stock − current_stock))</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================
+             INVENTORY HEALTH OVERVIEW
+             (Visible only when stock data is provided)
+             ============================================ -->
+        <div class="health-overview" id="health-overview" hidden>
+          <div class="health-overview__header">
+            <h3 class="health-overview__title">Inventory Health Overview</h3>
+            <p class="health-overview__sub">Aggregated from current stock levels, demand velocity, and lead time settings.</p>
+          </div>
+          <div class="health-overview__grid">
+            <div class="health-card health-card--risk">
+              <span class="health-card__value" id="health-at-risk">0</span>
+              <span class="health-card__label">SKUs at risk</span>
+              <span class="health-card__sub" id="health-at-risk-sub">Coverage &lt; target coverage</span>
+            </div>
+            <div class="health-card health-card--overdue">
+              <span class="health-card__value" id="health-overdue">0</span>
+              <span class="health-card__label">Overdue reorders</span>
+              <span class="health-card__sub" id="health-overdue-sub">No overdue reorders</span>
+            </div>
+            <div class="health-card health-card--coverage">
+              <span class="health-card__value" id="health-avg-coverage">—</span>
+              <span class="health-card__label">Avg stock coverage</span>
+              <span class="health-card__sub">Mean days of supply across SKUs</span>
+            </div>
+            <div class="health-card health-card--revenue">
+              <span class="health-card__value" id="health-lost-revenue">—</span>
+              <span class="health-card__label" id="health-lost-revenue-label">Potential lost revenue</span>
+              <span class="health-card__sub" id="health-lost-revenue-sub">avg_daily × price × days_out_of_stock (only when coverage &lt; lead_time)</span>
+            </div>
+            <div class="health-card health-card--capital">
+              <span class="health-card__value" id="health-slow-capital">—</span>
+              <span class="health-card__label" id="health-slow-capital-label">Capital in slow movers</span>
+              <span class="health-card__sub" id="health-slow-capital-sub">slow_mover: velocity_pct &lt; 0; overstocked: coverage_days &gt; target; capital = Σ(stock × unit_price)</span>
+            </div>
+          </div>
+          <div class="health-overview__formulas">
+            <details class="health-overview__formulas-toggle">
+              <summary class="health-overview__formulas-summary">
+                How these are calculated
+                <span class="faq__icon" aria-hidden="true">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+              </summary>
+              <div class="health-overview__formulas-content">
+                <p class="mono">at_risk = count(risk ∈ {Stockout, Reorder now, Watch})</p>
+                <p class="mono">overdue = count(risk ≠ On track AND last_safe_reorder_date &lt; today)</p>
+                <p class="mono">avg_coverage = mean(coverage_days) [SKUs where avg_daily &gt; 0 and coverage is finite]</p>
+                <p class="mono">coverage_days = (avg_daily &gt; 0) ? current_stock / avg_daily : (current_stock &gt; 0 ? — : 0)</p>
+                <p class="mono">safety_stock = z × sigma_daily × sqrt(lead_time_days)</p>
+                <p class="mono">reorder_qty = ceil(max(0, target_coverage_days × avg_daily + safety_stock − current_stock))</p>
+                <p class="mono">last_safe_reorder_date = today + max(0, coverage_days − lead_time_days)</p>
+                <p class="mono">days_out_of_stock = max(0, lead_time − coverage_days)</p>
+                <p class="mono">lost_revenue = Σ(avg_daily × price × days_out_of_stock) [already 0 when coverage ≥ lead_time]</p>
+                <p class="mono">cv = (avg_daily &gt; 0) ? sigma_daily / avg_daily : null (no demand — not measurable, displayed as "—")</p>
+                <p class="mono">slow_mover = velocity_pct &lt; 0; overstocked = coverage_days &gt; target_coverage_days</p>
+                <p class="mono">slow_overstocked_capital = Σ(stock × unit_price) for slow movers + Σ(stock × unit_price) for overstocked</p>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        <!-- SKU Demand Table -->
+        <div class="try-results__panel anim-fade">
+          <div class="try-results__panel-header">
+            <span class="try-results__panel-title">SKU Demand Table</span>
+            <span class="try-results__panel-meta mono" id="horizon-label">Next 30 days</span>
+          </div>
+          <div class="try-results__table-wrap">
+            <table class="try-results__table" id="sku-table">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Product</th>
+                  <th>Forecast Total</th>
+                  <th>Avg Daily</th>
+                  <th>Velocity</th>
+                  <th title="Coefficient of variation: std_dev ÷ mean. Stable < 0.5; Moderate 0.5–1.0; Volatile ≥ 1.0">Volatility</th>
+                  <th class="stock-col" hidden>Stock</th>
+                  <th class="stock-col" hidden title="current_stock ÷ avg_daily_sales. Days of inventory remaining at current sell rate.">Coverage</th>
+                  <th class="stock-col" hidden title="Last day to place an order without stockout. last_safe_reorder_date = today + max(0, coverage_days − lead_time_days)">Last safe reorder date</th>
+                  <th class="stock-col" hidden title="ceil(max(0, target_coverage × avg_daily + safety_stock − current_stock)). Only shown when coverage &lt; target.">Reorder Qty</th>
+                  <th class="stock-col" hidden>Risk</th>
+                </tr>
+              </thead>
+              <tbody id="sku-table-body">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Empty state (shown if no data) -->
+          <div class="try-results__empty" id="results-empty" hidden>
+            <p class="try-results__empty-text">No SKU data to display. Upload a CSV or run the demo to see results.</p>
+          </div>
+        </div>
+
+        <!-- Reorder Summary (only visible in inventory-aware mode) -->
+        <div class="try-results__panel anim-fade" id="reorder-panel" hidden>
+          <div class="try-results__panel-header">
+            <span class="try-results__panel-title">Reorder List</span>
+            <span class="try-results__panel-badge" id="reorder-count">—</span>
+          </div>
+          <div class="try-results__reorder-list" id="reorder-list">
+            <!-- Populated by JS -->
+          </div>
+
+          <!-- Empty state -->
+          <div class="try-results__empty" id="reorder-empty" hidden>
+            <p class="try-results__empty-text">No items need reordering in this time frame.</p>
+          </div>
+
+          <!-- Formula explanation -->
+          <div class="try-results__formula" id="reorder-formula" hidden>
+            <p class="try-results__formula-label">How reorder quantities are calculated:</p>
+
+            <p class="try-results__formula-sublabel" style="margin-top: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">Core formulas</p>
+            <p class="try-results__formula-detail mono">reorder_qty = ceil(max(0, target_coverage_days × avg_daily + safety_stock − current_stock))</p>
+            <p class="try-results__formula-detail mono">safety_stock = <span id="formula-safety-stock">z × sigma_daily × √(lead_time_days)</span></p>
+
+            <p class="try-results__formula-sublabel" style="margin-top: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">Coverage days</p>
+            <p class="try-results__formula-detail mono">coverage_days = current_stock / avg_daily&emsp;(when avg_daily &gt; 0)</p>
+            <p class="try-results__formula-detail mono">coverage_days = ∞&emsp;(when avg_daily ≤ 0, current_stock &gt; 0 — no demand, stock does not deplete)</p>
+            <p class="try-results__formula-detail mono">coverage_days = 0&emsp;(when avg_daily ≤ 0, current_stock = 0)</p>
+
+            <p class="try-results__formula-sublabel" style="margin-top: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">Coefficient of variation</p>
+            <p class="try-results__formula-detail mono">cv = sigma_daily / avg_daily&emsp;(when avg_daily &gt; 0)</p>
+            <p class="try-results__formula-detail mono">cv = undefined&emsp;(when avg_daily ≤ 0 — not measurable)</p>
+
+            <p class="try-results__formula-sublabel" style="margin-top: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">Derived metrics</p>
+            <p class="try-results__formula-detail mono">last_safe_reorder_date = today + max(0, coverage_days − lead_time_days)</p>
+            <p class="try-results__formula-detail mono">days_out_of_stock = max(0, lead_time_days − coverage_days)</p>
+            <p class="try-results__formula-detail mono">lost_revenue = avg_daily × unit_price × days_out_of_stock</p>
+
+            <p class="try-results__formula-sublabel" style="margin-top: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">Risk logic</p>
+            <p class="try-results__formula-detail mono">Stockout: coverage_days ≤ 0</p>
+            <p class="try-results__formula-detail mono">Reorder now: coverage_days &lt; lead_time_days</p>
+            <p class="try-results__formula-detail mono">Watch: coverage_days &lt; target_coverage_days (and ≥ lead_time_days)</p>
+            <p class="try-results__formula-detail mono">On track: otherwise</p>
+            <p class="try-results__formula-detail mono">overdue: risk ≠ On track AND last_safe_reorder_date &lt; today</p>
+            <p class="try-results__formula-detail mono">when avg_daily ≤ 0: reorder_qty = 0 (no demand to reorder for)</p>
+
+            <p class="try-results__formula-sublabel" style="margin-top: 10px; font-weight: 600; font-size: 0.85rem; color: var(--text-secondary);">Display rules</p>
+            <p class="try-results__formula-detail mono">coverage_days = ∞ → displayed as "—"</p>
+            <p class="try-results__formula-detail mono">cv = undefined → displayed as "—" with tooltip "not measurable (no demand)"</p>
+            <p class="try-results__formula-detail mono">reorder_qty only shown when risk ≠ On track</p>
+
+            <p class="try-results__formula-note">Safety stock uses <span id="formula-safety-label">95% service level</span> (z-score: 90%→1.28, 95%→1.65, 99%→2.33) with volatility-based calculation. Lead time default: <span id="formula-leadtime-label">7 days</span>. Target coverage is decoupled from the forecast horizon — you can view 90-day forecasts while ordering for 30 days of coverage.</p>
+          </div>
+        </div>
+
+        <!-- ============================================
+             SECTION F — SAVE / EXPORT GATING
+             ============================================ -->
+        <div class="try-results__gate anim-fade" id="results-gate">
+          <div class="try-results__gate-content">
+            <h3 class="try-results__gate-title">Save your results</h3>
+            <p class="try-results__gate-desc">
+              Export this forecast or save it to revisit later. Enter your email
+              and we'll send a login link — no password needed.
+            </p>
+            <form class="try-results__gate-form" id="gate-form">
+              <div class="try-results__gate-input-wrap">
+                <label for="gate-email" class="try-results__gate-label">Email address</label>
+                <input
+                  type="email"
+                  id="gate-email"
+                  class="try-results__gate-input"
+                  placeholder="you@yourstore.com"
+                  required
+                  aria-describedby="gate-hint"
+                />
+                <p class="try-results__gate-hint" id="gate-hint">
+                  We'll send a magic link. No password to set up.
+                </p>
+              </div>
+              <div class="try-results__gate-actions">
+                <button type="submit" class="btn btn--primary" id="btn-save">Save &amp; export results</button>
+                <button type="button" class="btn btn--secondary btn--sm" id="btn-magic-link">Email me a login link</button>
+              </div>
+            </form>
+
+            <!-- Success state (after email is sent) -->
+            <div class="try-results__gate-success" id="gate-success" hidden>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                <path d="M8 12L11 15L16 9" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div>
+                <p class="try-results__gate-success-title">Check your inbox</p>
+                <p class="try-results__gate-success-desc">
+                  We sent a login link to <strong id="gate-email-echo">—</strong>.
+                  Click it to access your saved forecasts and export data.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         SECTION C — TRUST / DATA HANDLING BLOCK
+         ============================================ -->
+    <section class="try-trust" id="try-trust">
+      <div class="container">
+        <div class="try-trust__inner anim-fade">
+          <h3 class="try-trust__title">How we handle your data</h3>
+          <div class="try-trust__grid">
+            <div class="try-trust__item">
+              <div class="try-trust__icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <rect x="4" y="2" width="12" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <line x1="7" y1="8" x2="13" y2="8" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                  <line x1="7" y1="11" x2="12" y2="11" stroke="currentColor" stroke-width="1" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="try-trust__item-title">CSV-only upload</p>
+                <p class="try-trust__item-desc">We only accept CSV files. No store connections, no API access, no tracking scripts on your site.</p>
+              </div>
+            </div>
+
+            <div class="try-trust__item">
+              <div class="try-trust__icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <rect x="4" y="9" width="12" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M7 9V6a3 3 0 1 1 6 0v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="try-trust__item-title">You control your data</p>
+                <p class="try-trust__item-desc">Files are processed for forecasting only. We don't sell, share, or repurpose your data.</p>
+              </div>
+            </div>
+
+            <div class="try-trust__item">
+              <div class="try-trust__icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <polyline points="3 5 4 5 17 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <line x1="8" y1="9" x2="8" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                  <line x1="12" y1="9" x2="12" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="try-trust__item-title">Delete anytime</p>
+                <p class="try-trust__item-desc">Remove your uploads instantly from your account. No questions, no waiting period.</p>
+              </div>
+            </div>
+
+            <div class="try-trust__item">
+              <div class="try-trust__icon">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/>
+                  <path d="M10 5v5l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="try-trust__item-title">Data retention</p>
+                <p class="try-trust__item-desc">Uploaded files are deleted after 30 days. Demo data is not stored. Retention controls for accounts are being finalized.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pricing-section" id="pricing">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">Pricing</p>
+          <h2 class="section-headline">Simple, transparent pricing</h2>
+          <p class="section-sub">Start free, upgrade when you need more.</p>
+        </div>
+        <div class="pricing-grid">
+          <div class="pricing-card anim-fade">
+            <div class="pricing-card__header">
+              <h3 class="pricing-card__name">Free</h3>
+              <div class="pricing-card__price">
+                <span class="pricing-card__amount">$0</span>
+                <span class="pricing-card__period">/month</span>
+              </div>
+              <p class="pricing-card__desc">Explore with sample data and basic forecasts.</p>
+            </div>
+            <ul class="pricing-card__features">
+              <li>Up to 25 SKUs</li>
+              <li>30-day forecasts</li>
+              <li>Sample data access</li>
+              <li>Basic risk indicators</li>
+            </ul>
+            <button class="btn btn--outline pricing-card__btn" id="btn-pricing-free">Get started</button>
+          </div>
+          <div class="pricing-card pricing-card--featured anim-fade">
+            <span class="pricing-card__badge">Most popular</span>
+            <div class="pricing-card__header">
+              <h3 class="pricing-card__name">Pro</h3>
+              <div class="pricing-card__price">
+                <span class="pricing-card__amount">$19</span>
+                <span class="pricing-card__period">/month</span>
+              </div>
+              <p class="pricing-card__desc">Full forecasting suite for growing stores.</p>
+            </div>
+            <ul class="pricing-card__features">
+              <li>Up to 500 SKUs</li>
+              <li>90-day forecasts</li>
+              <li>CSV export</li>
+              <li>Save scenarios</li>
+              <li>Priority support</li>
+            </ul>
+            <button class="btn btn--primary pricing-card__btn" id="btn-pricing-pro">Upgrade to Pro</button>
+          </div>
+          <div class="pricing-card anim-fade">
+            <div class="pricing-card__header">
+              <h3 class="pricing-card__name">Team</h3>
+              <div class="pricing-card__price">
+                <span class="pricing-card__amount">$79</span>
+                <span class="pricing-card__period">/month</span>
+              </div>
+              <p class="pricing-card__desc">Multi-store support and team collaboration.</p>
+            </div>
+            <ul class="pricing-card__features">
+              <li>Unlimited SKUs</li>
+              <li>Multi-store support</li>
+              <li>Team access (5 seats)</li>
+              <li>API access</li>
+              <li>Dedicated support</li>
+            </ul>
+            <button class="btn btn--outline pricing-card__btn" id="btn-pricing-team">Contact sales</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="try-faq" id="try-faq">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">Demo FAQ</p>
+          <h2 class="section-headline">Questions about the demo</h2>
+        </div>
+
+        <div class="faq__list">
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              Do I need to create an account to try the demo?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                No. The demo with sample data works without any account. If you upload your own CSV,
+                that also works without signing up. You only need an email if you want to save results,
+                export data, or come back later.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              What happens to the CSV I upload?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Your file is processed to generate the forecast. If you don't create an account,
+                the file is discarded after your session ends. If you sign in with your email,
+                uploads are stored for 30 days so you can re-run forecasts.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              Is the sample dataset realistic?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                The sample uses synthetic data modeled after a small e-commerce store with 12 SKUs
+                across 6 months. It includes realistic patterns — seasonal variation, mixed velocities,
+                and some stockout gaps — so the forecast output is representative of what you'd see with real data.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              What is a "magic link" sign-in?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Instead of setting a password, we send a one-time login link to your email.
+                Click it and you're signed in. Each link expires after 15 minutes for security.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              Can I upload more than one CSV?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Yes. You upload a sales CSV to generate forecasts. You can optionally upload a second CSV
+                with current stock levels per SKU to unlock risk assessment and reorder suggestions.
+                After creating an account, you can manage multiple uploads and re-run forecasts.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              What if I don't provide stock data?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Forecasts work without stock data. You'll see demand projections, average daily sales,
+                and velocity trends per SKU. Risk status (On track / Watch / Reorder now), stock coverage,
+                and reorder quantity suggestions require stock levels and will not be shown without them.
+                This prevents Stackwise from making unfounded claims about your inventory position.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              How are reorder quantities calculated?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                <code>reorder_qty = ceil(max(0, target_coverage × avg_daily_sales + safety_stock − current_stock))</code><br>
+                Safety stock is calculated using <code>z × σ_daily × √lead_time</code>, where z is derived from the
+                selected service level (default 95%). This accounts for demand volatility per SKU.
+                The formula is deterministic; there are no hidden adjustments.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              How is this different from the paid plans?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                The demo shows the core forecast output — demand projections, risk indicators, and
+                the reorder list. Paid plans add saved history, higher SKU limits, stockout alerts,
+                scenario forecasting, and multi-store support depending on the tier.
+                <a href="index.html#pricing" class="try-faq__link">View plans</a>.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         BOTTOM CTA — Convert demo users
+         ============================================ -->
+    <section class="try-cta">
+      <div class="container">
+        <div class="try-cta__inner anim-fade">
+          <h2 class="try-cta__headline">Ready to use Stackwise<br />with your own data?</h2>
+          <p class="try-cta__sub">
+            Start a 7-day free trial. Upload your sales history and get ongoing forecasts.
+          </p>
+          <div class="try-cta__actions">
+            <a href="index.html#pricing" class="btn btn--primary btn--lg">Start free trial</a>
+          </div>
+          <p class="try-cta__note">No credit card required. Cancel anytime.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="index.html" class="footer__logo" aria-label="Stackwise home">
+          <span>Stackwise</span>
+        </a>
+        <p class="footer__tagline">Demand forecasting for small e-commerce.</p>
+        <a href="mailto:hello@stackwise.io" class="footer__link footer__contact">hello@stackwise.io</a>
+      </div>
+
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4 class="footer__col-title">Product</h4>
+          <a href="try.html" class="footer__link">Try Stackwise</a>
+          <a href="index.html#how-it-works" class="footer__link">How it works</a>
+          <a href="index.html#features" class="footer__link">Features</a>
+          <a href="index.html#pricing" class="footer__link">Pricing</a>
+          <a href="index.html#faq" class="footer__link">FAQ</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <p class="footer__copy">&copy; 2026 Stackwise. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="animations.js"></script>
+  <script src="metrics.js"></script>
+  <script src="try.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="try-auth.js"></script>
+</body>
+</html>

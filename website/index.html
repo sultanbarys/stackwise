@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stackwise — Demand Forecasting for Small E-Commerce</title>
+  <meta name="description" content="Upload your sales CSV. Get demand forecasts, stockout risk alerts, and reorder timing — built for Shopify sellers, marketplace vendors, and small e-commerce stores." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Skip to content -->
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner container">
+      <a href="/" class="nav__logo" aria-label="Stackwise home">
+        <span class="nav__logo-text">Stackwise</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Main navigation">
+        <a href="#how-it-works" class="nav__link">How it works</a>
+        <a href="#features" class="nav__link">Features</a>
+        <a href="#pricing" class="nav__link">Pricing</a>
+        <a href="#faq" class="nav__link">FAQ</a>
+      </nav>
+
+      <div class="nav__actions">
+        <div class="nav__auth-out" id="nav-auth-out">
+          <a href="auth.html" class="btn btn--outline btn--sm">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary btn--sm">Start free</a>
+        </div>
+        <div class="nav__auth-in" id="nav-auth-in" hidden>
+          <a href="app.html" class="btn btn--secondary btn--sm">Dashboard</a>
+          <button class="btn btn--ghost btn--sm" id="btn-header-logout">Log out</button>
+        </div>
+      </div>
+
+      <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="nav__mobile" id="mobile-menu" role="navigation" aria-label="Mobile navigation" aria-hidden="true">
+      <nav class="nav__mobile-links">
+        <a href="#how-it-works" class="nav__mobile-link">How it works</a>
+        <a href="#features" class="nav__mobile-link">Features</a>
+        <a href="#pricing" class="nav__mobile-link">Pricing</a>
+        <a href="#faq" class="nav__mobile-link">FAQ</a>
+        <div class="nav__mobile-auth" id="mobile-auth-out" style="margin-top:16px">
+          <a href="auth.html" class="btn btn--outline nav__mobile-auth-btn">Log in</a>
+          <a href="auth.html?tab=signup" class="btn btn--primary nav__mobile-auth-btn" style="margin-top:8px">Start free</a>
+        </div>
+        <div class="nav__mobile-auth" id="mobile-auth-in" hidden style="margin-top:16px">
+          <a href="app.html" class="btn btn--secondary nav__mobile-auth-btn">Dashboard</a>
+          <button class="btn btn--ghost nav__mobile-auth-btn" id="btn-mobile-logout" style="margin-top:8px">Log out</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============================================
+         HERO
+         ============================================ -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="hero__label anim-fade">Demand forecasting for small e-commerce</p>
+          <h1 class="hero__headline anim-fade">
+            Know what to restock<br />before you run out
+          </h1>
+          <p class="hero__sub anim-fade">
+            Upload your sales CSV. Stackwise forecasts demand per SKU using your historical
+            data. Optionally add stock levels to get reorder timing and stockout risk. No integrations required.
+          </p>
+          <div class="hero__ctas anim-fade">
+            <a href="try.html" class="btn btn--primary">Try the demo</a>
+            <a href="try.html#upload" class="btn btn--secondary">Upload your CSV</a>
+          </div>
+          <p class="hero__note anim-fade">No account required. See results in under a minute.</p>
+        </div>
+
+        <div class="hero__visual anim-fade">
+          <!-- Animated data flow diagram (SVG) -->
+          <div class="hero__diagram">
+            <svg class="diagram-flow" viewBox="0 0 520 340" fill="none" aria-label="Diagram showing CSV file flowing into forecast chart and reorder alert">
+              <!-- CSV file icon -->
+              <g class="diagram-step diagram-step--1">
+                <rect x="20" y="120" width="100" height="120" rx="8" stroke="var(--text-primary)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <line x1="40" y1="150" x2="100" y2="150" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="40" y1="168" x2="90" y2="168" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="40" y1="186" x2="95" y2="186" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="40" y1="204" x2="85" y2="204" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="70" y="110" text-anchor="middle" class="diagram-label">Your CSV</text>
+              </g>
+
+              <!-- Arrow 1 -->
+              <g class="diagram-arrow diagram-arrow--1">
+                <line x1="130" y1="180" x2="190" y2="180" stroke="var(--accent-olive)" stroke-width="1.5" stroke-dasharray="6 4" stroke-linecap="round"/>
+                <polygon points="190,175 200,180 190,185" fill="var(--accent-olive)"/>
+              </g>
+
+              <!-- Stackwise processing -->
+              <g class="diagram-step diagram-step--2">
+                <rect x="210" y="130" width="100" height="100" rx="50" stroke="var(--accent-olive)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <text x="260" y="176" text-anchor="middle" class="diagram-label-sm" fill="var(--accent-olive)">Stackwise</text>
+                <text x="260" y="193" text-anchor="middle" class="diagram-label-xs" fill="var(--text-tertiary)">Forecast</text>
+                <text x="260" y="118" text-anchor="middle" class="diagram-label">Analysis</text>
+              </g>
+
+              <!-- Arrow 2 -->
+              <g class="diagram-arrow diagram-arrow--2">
+                <line x1="320" y1="160" x2="380" y2="120" stroke="var(--accent-olive)" stroke-width="1.5" stroke-dasharray="6 4" stroke-linecap="round"/>
+                <polygon points="377,114 387,117 380,125" fill="var(--accent-olive)"/>
+                <line x1="320" y1="200" x2="380" y2="240" stroke="var(--accent-olive)" stroke-width="1.5" stroke-dasharray="6 4" stroke-linecap="round"/>
+                <polygon points="377,246 387,243 380,235" fill="var(--accent-olive)"/>
+              </g>
+
+              <!-- Output: Forecast chart -->
+              <g class="diagram-step diagram-step--3">
+                <rect x="390" y="60" width="120" height="90" rx="8" stroke="var(--text-primary)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <polyline points="405,130 425,115 445,120 465,100 485,95 495,85" stroke="var(--accent-olive)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="450" y="50" text-anchor="middle" class="diagram-label">Forecast</text>
+              </g>
+
+              <!-- Output: Reorder alert -->
+              <g class="diagram-step diagram-step--4">
+                <rect x="390" y="200" width="120" height="90" rx="8" stroke="var(--text-primary)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <circle cx="420" cy="235" r="8" stroke="var(--accent-terra)" stroke-width="1.5" fill="none"/>
+                <text x="420" y="239" text-anchor="middle" class="diagram-label-xs" fill="var(--accent-terra)">!</text>
+                <line x1="438" y1="230" x2="495" y2="230" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="438" y1="245" x2="480" y2="245" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="450" y="190" text-anchor="middle" class="diagram-label">Reorder Alert</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         TRUST / DATA HANDLING
+         ============================================ -->
+    <section class="trust" id="trust">
+      <div class="container">
+        <div class="trust__grid">
+          <div class="trust__item anim-fade">
+            <div class="trust__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="5" y="11" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M8 11V7a4 4 0 1 1 8 0v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="trust__title">Your data stays yours</h4>
+              <p class="trust__desc">CSV files are processed for forecasting only. We don't sell, share, or use your data for anything else.</p>
+            </div>
+          </div>
+
+          <div class="trust__item anim-fade">
+            <div class="trust__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="trust__title">30-day data retention</h4>
+              <p class="trust__desc">Uploaded files are automatically deleted after 30 days. Re-upload anytime for fresh forecasts.</p>
+            </div>
+          </div>
+
+          <div class="trust__item anim-fade">
+            <div class="trust__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <polyline points="3 6 5 6 21 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="10" y1="11" x2="10" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="14" y1="11" x2="14" y2="17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="trust__title">Delete anytime</h4>
+              <p class="trust__desc">Remove all your data instantly from account settings. No questions, no waiting period.</p>
+            </div>
+          </div>
+
+          <div class="trust__item anim-fade">
+            <div class="trust__icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="trust__title">CSV-only, no integrations</h4>
+              <p class="trust__desc">No API connections to your store. You control exactly what data Stackwise sees by choosing what to upload.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PROBLEM SECTION
+         ============================================ -->
+    <section class="problem" id="problem">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">The problem</p>
+          <h2 class="section-headline">Most small sellers manage<br />inventory by gut feeling</h2>
+          <p class="section-sub">
+            You check stock when something feels low. You reorder based on last month.
+            You find out you're out of a top seller when a customer tells you.
+          </p>
+        </div>
+
+        <div class="problem__grid">
+          <div class="problem__card anim-fade">
+            <div class="problem__icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <circle cx="16" cy="16" r="14" stroke="var(--accent-rust)" stroke-width="1.5"/>
+                <line x1="16" y1="10" x2="16" y2="18" stroke="var(--accent-rust)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="16" cy="22" r="1.5" fill="var(--accent-rust)"/>
+              </svg>
+            </div>
+            <h3 class="problem__title">Stockouts you didn't see coming</h3>
+            <p class="problem__desc">
+              A SKU sells out and you don't notice for days. Lost sales, disappointed customers,
+              and no way to know how much revenue was missed.
+            </p>
+          </div>
+
+          <div class="problem__card anim-fade">
+            <div class="problem__icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <rect x="4" y="8" width="24" height="18" rx="3" stroke="var(--accent-terra)" stroke-width="1.5"/>
+                <line x1="4" y1="14" x2="28" y2="14" stroke="var(--accent-terra)" stroke-width="1.5"/>
+                <line x1="12" y1="14" x2="12" y2="26" stroke="var(--accent-terra)" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="problem__title">Spreadsheets that don't forecast</h3>
+            <p class="problem__desc">
+              You track numbers in a spreadsheet. It tells you what happened,
+              never what's about to happen. Reordering stays reactive.
+            </p>
+          </div>
+
+          <div class="problem__card anim-fade">
+            <div class="problem__icon">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <path d="M8 24 L16 8 L24 24" stroke="var(--accent-terra)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="11" y1="20" x2="21" y2="20" stroke="var(--accent-terra)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="problem__title">Overstock tying up cash</h3>
+            <p class="problem__desc">
+              Without demand data, you order too much of slow-moving SKUs. Capital sits in a warehouse
+              instead of being used where it matters.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         UNDERSTAND YOUR DEMAND
+         ============================================ -->
+    <section class="demand" id="demand">
+      <div class="container">
+        <div class="demand__layout">
+          <div class="demand__content anim-fade">
+            <p class="section-label">Understand your demand</p>
+            <h2 class="section-headline">Your past sales data<br />already has the answer</h2>
+            <p class="body-lg">
+              Every CSV export from Shopify, Amazon, or any marketplace contains patterns —
+              seasonal trends, velocity shifts, SKU-level cycles. Stackwise reads that data
+              and surfaces what's coming next.
+            </p>
+            <ul class="demand__list">
+              <li class="demand__list-item anim-fade">
+                <span class="demand__check" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9L7.5 12.5L14 5.5" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                SKU-level demand projections calculated from your sales history
+              </li>
+              <li class="demand__list-item anim-fade">
+                <span class="demand__check" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9L7.5 12.5L14 5.5" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Velocity metrics showing which SKUs are accelerating or slowing
+              </li>
+              <li class="demand__list-item anim-fade">
+                <span class="demand__check" aria-hidden="true">
+                  <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9L7.5 12.5L14 5.5" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Stockout risk and reorder timing when you provide current stock levels
+              </li>
+            </ul>
+          </div>
+
+          <div class="demand__visual anim-fade">
+            <!-- Animated forecast chart mockup -->
+            <div class="demand__chart-container">
+              <div class="demand__chart-header">
+                <span class="demand__chart-title">SKU Demand Forecast</span>
+                <span class="demand__chart-meta mono">Next 30 days</span>
+              </div>
+              <svg class="demand__chart" viewBox="0 0 480 220" fill="none" aria-label="Example demand forecast chart showing projected demand curve">
+                <!-- Grid lines -->
+                <line x1="40" y1="20" x2="40" y2="190" stroke="var(--chart-grid)" stroke-width="1"/>
+                <line x1="40" y1="190" x2="460" y2="190" stroke="var(--chart-grid)" stroke-width="1"/>
+                <line x1="40" y1="147.5" x2="460" y2="147.5" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4 4"/>
+                <line x1="40" y1="105" x2="460" y2="105" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4 4"/>
+                <line x1="40" y1="62.5" x2="460" y2="62.5" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4 4"/>
+                <line x1="40" y1="20" x2="460" y2="20" stroke="var(--chart-grid)" stroke-width="0.5" stroke-dasharray="4 4"/>
+
+                <!-- Y-axis labels -->
+                <text x="32" y="193" text-anchor="end" class="chart-axis-label">0</text>
+                <text x="32" y="150" text-anchor="end" class="chart-axis-label">—</text>
+                <text x="32" y="108" text-anchor="end" class="chart-axis-label">—</text>
+                <text x="32" y="65" text-anchor="end" class="chart-axis-label">—</text>
+
+                <!-- Historical area (filled) -->
+                <path class="chart-area-history" d="M40,190 L40,140 L100,135 L160,110 L220,120 L250,105 L250,190 Z" fill="var(--chart-fill)" opacity="0.3"/>
+
+                <!-- Historical line -->
+                <polyline class="chart-line-history" points="40,140 100,135 160,110 220,120 250,105" stroke="var(--chart-line)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <!-- Divider: past → future -->
+                <line x1="250" y1="20" x2="250" y2="190" stroke="var(--text-tertiary)" stroke-width="1" stroke-dasharray="4 4"/>
+                <text x="250" y="210" text-anchor="middle" class="chart-axis-label">Today</text>
+
+                <!-- Forecast area -->
+                <path class="chart-area-forecast" d="M250,190 L250,105 L310,90 L370,70 L430,60 L460,55 L460,190 Z" fill="var(--accent-olive)" opacity="0.08"/>
+
+                <!-- Forecast line (dashed) -->
+                <polyline class="chart-line-forecast" points="250,105 310,90 370,70 430,60 460,55" stroke="var(--accent-olive)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="8 4"/>
+
+                <!-- Projected demand marker -->
+                <circle class="chart-reorder-marker" cx="370" cy="70" r="5" fill="var(--accent-olive)" stroke="var(--bg-warm-white)" stroke-width="2"/>
+                <text x="370" y="56" text-anchor="middle" class="chart-callout-label" fill="var(--accent-olive)">~270 units</text>
+              </svg>
+              <div class="demand__chart-legend">
+                <span class="legend-item"><span class="legend-line legend-line--solid"></span>Historical</span>
+                <span class="legend-item"><span class="legend-line legend-line--dashed"></span>Forecast</span>
+                <span class="legend-item"><span class="legend-dot legend-dot--forecast"></span>Projected demand</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PRODUCT PREVIEWS
+         ============================================ -->
+    <section class="previews" id="previews">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">Product preview</p>
+          <h2 class="section-headline">What you'll see<br />inside Stackwise</h2>
+          <p class="section-sub">
+            Clean tables and actionable lists — not another dashboard you'll never check.
+          </p>
+        </div>
+
+        <div class="previews__grid">
+          <!-- Mode A: Forecast-Only Table (default — no stock data required) -->
+          <div class="previews__panel anim-fade">
+            <div class="previews__panel-header">
+              <span class="previews__panel-title">SKU Demand Table</span>
+              <span class="previews__panel-badge">Forecast-only mode · Sample data</span>
+            </div>
+            <p class="previews__panel-note">
+              Based on sales history only. No stock data required.
+            </p>
+            <div class="previews__table-wrap">
+              <table class="previews__table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Product</th>
+                    <th>30-day Forecast</th>
+                    <th>Avg Daily</th>
+                    <th>Velocity</th>
+                    <th>Volatility</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="mono">BK-1042</span></td>
+                    <td>Ceramic Mug — Sage</td>
+                    <td><span class="mono">284 units</span></td>
+                    <td><span class="mono">9.5/day</span></td>
+                    <td><span class="velocity velocity--up">&#8593; +12%</span></td>
+                    <td><span class="volatility-badge volatility--stable">Stable</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">LT-0887</span></td>
+                    <td>Linen Tote — Natural</td>
+                    <td><span class="mono">156 units</span></td>
+                    <td><span class="mono">5.2/day</span></td>
+                    <td><span class="velocity velocity--up">&#8593; +24%</span></td>
+                    <td><span class="volatility-badge volatility--moderate">Moderate</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">CN-2215</span></td>
+                    <td>Soy Candle — Cedar</td>
+                    <td><span class="mono">92 units</span></td>
+                    <td><span class="mono">3.1/day</span></td>
+                    <td><span class="velocity velocity--flat">&#8594; 0%</span></td>
+                    <td><span class="volatility-badge volatility--stable">Stable</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">WB-0334</span></td>
+                    <td>Wool Blanket — Oat</td>
+                    <td><span class="mono">47 units</span></td>
+                    <td><span class="mono">1.6/day</span></td>
+                    <td><span class="velocity velocity--down">&#8595; &#8722;8%</span></td>
+                    <td><span class="volatility-badge volatility--volatile">Volatile</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">PT-1190</span></td>
+                    <td>Stoneware Plate Set</td>
+                    <td><span class="mono">210 units</span></td>
+                    <td><span class="mono">7.0/day</span></td>
+                    <td><span class="velocity velocity--up">&#8593; +6%</span></td>
+                    <td><span class="volatility-badge volatility--stable">Stable</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Mode B: Inventory-Aware Table (when stock levels are provided) -->
+          <div class="previews__panel anim-fade">
+            <div class="previews__panel-header">
+              <span class="previews__panel-title">Inventory-Aware View</span>
+              <span class="previews__panel-badge">When stock levels are provided · Sample data</span>
+            </div>
+            <p class="previews__panel-note">
+              Risk and reorder data appear only when you provide current stock levels.
+            </p>
+            <div class="previews__table-wrap">
+              <table class="previews__table">
+                <thead>
+                  <tr>
+                    <th>SKU</th>
+                    <th>Product</th>
+                    <th>Stock</th>
+                    <th>Volatility</th>
+                    <th>Coverage</th>
+                    <th>Days to Stockout</th>
+                    <th>Risk</th>
+                    <th>Reorder Qty</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="mono">BK-1042</span></td>
+                    <td>Ceramic Mug — Sage</td>
+                    <td><span class="mono">120</span></td>
+                    <td><span class="volatility-badge volatility--stable">Stable</span></td>
+                    <td><span class="mono coverage--warning">13 days</span></td>
+                    <td><span class="mono">13 days</span></td>
+                    <td><span class="risk risk--high">Reorder soon</span></td>
+                    <td><span class="mono">177</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">LT-0887</span></td>
+                    <td>Linen Tote — Natural</td>
+                    <td><span class="mono">45</span></td>
+                    <td><span class="volatility-badge volatility--moderate">Moderate</span></td>
+                    <td><span class="mono coverage--critical">9 days</span></td>
+                    <td><span class="mono">9 days</span></td>
+                    <td><span class="risk risk--critical">Overdue</span></td>
+                    <td><span class="mono">125</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">CN-2215</span></td>
+                    <td>Soy Candle — Cedar</td>
+                    <td><span class="mono">200</span></td>
+                    <td><span class="volatility-badge volatility--stable">Stable</span></td>
+                    <td><span class="mono coverage--healthy">65 days</span></td>
+                    <td><span class="mono">65 days</span></td>
+                    <td><span class="risk risk--low">On track</span></td>
+                    <td><span class="mono">—</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="mono">WB-0334</span></td>
+                    <td>Wool Blanket — Oat</td>
+                    <td><span class="mono">85</span></td>
+                    <td><span class="volatility-badge volatility--volatile">Volatile</span></td>
+                    <td><span class="mono coverage--healthy">54 days</span></td>
+                    <td><span class="mono">54 days</span></td>
+                    <td><span class="risk risk--medium">Watch</span></td>
+                    <td><span class="mono">—</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="previews__formula-note">
+              <p class="previews__formula-label">How risk is determined:</p>
+              <ul class="previews__formula-list">
+                <li><span class="risk risk--low">On track</span> — Coverage &gt; lead time × 2</li>
+                <li><span class="risk risk--medium">Watch</span> — Coverage &gt; lead time</li>
+                <li><span class="risk risk--high">Reorder soon</span> — Coverage &lt; lead time</li>
+                <li><span class="risk risk--critical">Overdue</span> — Coverage ≤ 0 or stock exhausted</li>
+              </ul>
+              <p class="previews__formula-detail mono">days_to_stockout = current_stock ÷ avg_daily_sales</p>
+              <p class="previews__formula-detail mono">stock_coverage = days_to_stockout − safety_stock_in_days</p>
+            </div>
+          </div>
+
+          <!-- Reorder List (Inventory-Aware Mode only) -->
+          <div class="previews__panel anim-fade">
+            <div class="previews__panel-header">
+              <span class="previews__panel-title">Reorder Suggestions</span>
+              <span class="previews__panel-badge">Requires stock data</span>
+            </div>
+            <p class="previews__panel-note">
+              Reorder suggestions use a volatility-aware formula decoupled from the forecast horizon:
+              <span class="mono">reorder_qty = ceil(max(0, target_coverage × avg_daily + safety_stock − current_stock))</span>
+              where <span class="mono">safety_stock = z × σ × √lead_time</span> (z-score from your chosen service level).
+            </p>
+            <div class="previews__reorder-list">
+              <div class="previews__reorder-item">
+                <div class="previews__reorder-icon previews__reorder-icon--high">!</div>
+                <div>
+                  <p class="previews__reorder-name"><span class="reorder-tier reorder-tier--high">High</span> Linen Tote — Natural</p>
+                  <p class="previews__reorder-meta">9 days until stockout &middot; Avg 5.2/day &middot; Moderate volatility &middot; Suggested reorder: 125 units</p>
+                  <p class="previews__reorder-calc mono">(30 × 5.2) + 14 − 45 = 125</p>
+                </div>
+              </div>
+              <div class="previews__reorder-item">
+                <div class="previews__reorder-icon previews__reorder-icon--high">!</div>
+                <div>
+                  <p class="previews__reorder-name"><span class="reorder-tier reorder-tier--medium">Medium</span> Ceramic Mug — Sage</p>
+                  <p class="previews__reorder-meta">13 days until stockout &middot; Avg 9.5/day &middot; Stable demand &middot; Suggested reorder: 177 units</p>
+                  <p class="previews__reorder-calc mono">(30 × 9.5) + 12 − 120 = 177</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         DATA VISUALIZATION — WHERE LOSSES HAPPEN
+         ============================================ -->
+    <section class="losses" id="losses">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">Visibility gap</p>
+          <h2 class="section-headline">What you can't see<br />is costing you</h2>
+          <p class="section-sub">
+            Without forecasting, inventory decisions are based on memory and approximation.
+            These are the blind spots Stackwise addresses.
+          </p>
+        </div>
+
+        <div class="losses__grid">
+          <div class="losses__card anim-fade">
+            <div class="losses__metric">
+              <span class="losses__metric-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 2L12 22M2 12L22 12" stroke="var(--accent-rust)" stroke-width="1.5" stroke-linecap="round"/>
+                  <path d="M4 4L20 20" stroke="var(--accent-rust)" stroke-width="1.5" stroke-linecap="round"/>
+                </svg>
+              </span>
+              <span class="losses__metric-label">Sales gap detection</span>
+            </div>
+            <p class="losses__text">
+              Periods where a SKU has zero sales often signal a stockout. Stackwise identifies
+              these gaps in your sales history so you can investigate and prevent recurrence.
+            </p>
+          </div>
+
+          <div class="losses__card anim-fade">
+            <div class="losses__metric">
+              <span class="losses__metric-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" stroke="var(--accent-terra)" stroke-width="1.5"/>
+                  <path d="M12 6V12L16 14" stroke="var(--accent-terra)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="losses__metric-label">Reorder lead time gap</span>
+            </div>
+            <p class="losses__text">
+              The time between when you should order and when you actually do.
+              Stackwise shows the gap so you can close it.
+            </p>
+          </div>
+
+          <div class="losses__card anim-fade">
+            <div class="losses__metric">
+              <span class="losses__metric-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="3" y="10" width="4" height="10" rx="1" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                  <rect x="10" y="6" width="4" height="14" rx="1" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                  <rect x="17" y="2" width="4" height="18" rx="1" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                </svg>
+              </span>
+              <span class="losses__metric-label">SKU velocity patterns</span>
+            </div>
+            <p class="losses__text">
+              Which products are accelerating, slowing, or cycling? Stackwise surfaces velocity
+              changes per SKU so you can respond before demand shifts.
+            </p>
+          </div>
+
+          <div class="losses__card anim-fade">
+            <div class="losses__metric">
+              <span class="losses__metric-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M2 20L8 14L12 18L22 4" stroke="var(--accent-terra)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="losses__metric-label">Cash locked in overstock</span>
+            </div>
+            <p class="losses__text">
+              Overstocking slow SKUs ties up working capital. Stackwise highlights declining
+              demand trends so you can reduce orders before excess builds up.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         HOW IT WORKS
+         ============================================ -->
+    <section class="how" id="how-it-works">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">How it works</p>
+          <h2 class="section-headline">Three steps.<br />No setup complexity.</h2>
+        </div>
+
+        <div class="how__steps">
+          <!-- Step 1 -->
+          <div class="how__step anim-fade">
+            <div class="how__step-number">
+              <span>01</span>
+            </div>
+            <div class="how__step-visual">
+              <svg class="how__step-svg" viewBox="0 0 200 160" fill="none" aria-hidden="true">
+                <rect x="40" y="20" width="120" height="120" rx="8" stroke="var(--text-primary)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <path d="M85 60 L100 75 L115 60" stroke="var(--accent-olive)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="100" y1="45" x2="100" y2="75" stroke="var(--accent-olive)" stroke-width="2" stroke-linecap="round"/>
+                <line x1="65" y1="95" x2="135" y2="95" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="100" y="115" text-anchor="middle" class="diagram-label-xs" fill="var(--text-tertiary)">sales_data.csv</text>
+              </svg>
+            </div>
+            <h3 class="how__step-title">Upload your sales CSV</h3>
+            <p class="how__step-desc">
+              Export your order history from Shopify, Amazon, WooCommerce, or any system
+              that gives you a CSV. Upload it to Stackwise. That's the only input.
+            </p>
+          </div>
+
+          <!-- Connector line -->
+          <div class="how__connector anim-fade" aria-hidden="true">
+            <svg viewBox="0 0 80 20" fill="none">
+              <line x1="0" y1="10" x2="70" y2="10" stroke="var(--accent-olive)" stroke-width="1.5" stroke-dasharray="6 4"/>
+              <polygon points="70,5 80,10 70,15" fill="var(--accent-olive)"/>
+            </svg>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="how__step anim-fade">
+            <div class="how__step-number">
+              <span>02</span>
+            </div>
+            <div class="how__step-visual">
+              <svg class="how__step-svg" viewBox="0 0 200 160" fill="none" aria-hidden="true">
+                <rect x="40" y="20" width="120" height="120" rx="8" stroke="var(--text-primary)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <polyline points="60,110 85,85 105,95 130,55 145,50" stroke="var(--accent-olive)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="130" cy="55" r="4" fill="var(--accent-terra)" stroke="var(--bg-warm-white)" stroke-width="2"/>
+              </svg>
+            </div>
+            <h3 class="how__step-title">Get your demand forecast</h3>
+            <p class="how__step-desc">
+              Stackwise analyzes sales patterns per SKU and generates forward-looking
+              demand projections. You see what's likely to sell and when.
+            </p>
+          </div>
+
+          <!-- Connector line -->
+          <div class="how__connector anim-fade" aria-hidden="true">
+            <svg viewBox="0 0 80 20" fill="none">
+              <line x1="0" y1="10" x2="70" y2="10" stroke="var(--accent-olive)" stroke-width="1.5" stroke-dasharray="6 4"/>
+              <polygon points="70,5 80,10 70,15" fill="var(--accent-olive)"/>
+            </svg>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="how__step anim-fade">
+            <div class="how__step-number">
+              <span>03</span>
+            </div>
+            <div class="how__step-visual">
+              <svg class="how__step-svg" viewBox="0 0 200 160" fill="none" aria-hidden="true">
+                <rect x="40" y="20" width="120" height="120" rx="8" stroke="var(--text-primary)" stroke-width="1.5" fill="var(--bg-warm-white)"/>
+                <circle cx="75" cy="70" r="12" stroke="var(--accent-olive)" stroke-width="1.5" fill="none"/>
+                <path d="M71 70L74 73L79 67" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <line x1="95" y1="65" x2="145" y2="65" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="95" y1="78" x2="135" y2="78" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="75" cy="105" r="12" stroke="var(--accent-terra)" stroke-width="1.5" fill="none"/>
+                <text x="75" y="109" text-anchor="middle" class="diagram-label-xs" fill="var(--accent-terra)">!</text>
+                <line x1="95" y1="100" x2="145" y2="100" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="95" y1="113" x2="130" y2="113" stroke="var(--text-tertiary)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="how__step-title">Review results, optionally add stock</h3>
+            <p class="how__step-desc">
+              See demand forecasts and velocity metrics for every SKU. Optionally provide
+              your current stock levels to unlock stockout risk and reorder suggestions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         FEATURES — WHAT YOU GET
+         ============================================ -->
+    <section class="features" id="features">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">What you get</p>
+          <h2 class="section-headline">Every output tied to<br />a decision you need to make</h2>
+          <p class="section-sub">
+            Stackwise doesn't produce dashboards for the sake of dashboards.
+            Every output exists to answer a specific inventory question.
+          </p>
+        </div>
+
+        <div class="features__grid">
+          <div class="features__card anim-fade">
+            <div class="features__card-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <polyline points="4,24 10,16 16,19 22,8 26,6" stroke="var(--accent-olive)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="features__card-title">SKU-level demand forecast</h3>
+            <p class="features__card-desc">
+              Forward-looking demand projection for each product, based on your historical sales.
+              See daily/weekly expected volume per SKU.
+            </p>
+          </div>
+
+          <div class="features__card anim-fade">
+            <div class="features__card-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <circle cx="14" cy="14" r="12" stroke="var(--accent-rust)" stroke-width="1.5"/>
+                <line x1="14" y1="8" x2="14" y2="15" stroke="var(--accent-rust)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="14" cy="19" r="1.5" fill="var(--accent-rust)"/>
+              </svg>
+            </div>
+            <h3 class="features__card-title">Stockout risk alerts</h3>
+            <p class="features__card-desc">
+              Provide your current stock levels (optional CSV or manual entry). Stackwise
+              calculates days to stockout and flags at-risk SKUs. Only shown when stock data is provided.
+            </p>
+          </div>
+
+          <div class="features__card anim-fade">
+            <div class="features__card-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <rect x="3" y="6" width="22" height="18" rx="3" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                <circle cx="14" cy="15" r="5" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                <path d="M14 12V15L16 16" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="features__card-title">Reorder timing</h3>
+            <p class="features__card-desc">
+              When stock levels are provided, Stackwise calculates a volatility-aware reorder
+              quantity: <span class="mono">ceil(max(0, target_coverage × avg_daily + safety_stock − current_stock))</span>,
+              where safety stock adapts to each SKU's demand volatility.
+            </p>
+          </div>
+
+          <div class="features__card anim-fade">
+            <div class="features__card-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <rect x="2" y="4" width="24" height="20" rx="3" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                <line x1="2" y1="10" x2="26" y2="10" stroke="var(--accent-olive)" stroke-width="1.5"/>
+                <line x1="10" y1="10" x2="10" y2="24" stroke="var(--accent-olive)" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="features__card-title">SKU-level projections table</h3>
+            <p class="features__card-desc">
+              A sortable view of all your products with projected demand and sales velocity.
+              Stock and risk columns appear only when inventory data is provided.
+            </p>
+          </div>
+
+          <div class="features__card anim-fade">
+            <div class="features__card-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <path d="M6 22 L14 6 L22 22" stroke="var(--accent-olive)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M10 16 L18 16" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M6 22 L22 22" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="features__card-title">Scenario forecasting</h3>
+            <p class="features__card-desc">
+              Adjust assumptions — what if demand increases 20%? What if lead time doubles?
+              See how your inventory position changes. Available on Pro plan.
+            </p>
+          </div>
+
+          <div class="features__card anim-fade">
+            <div class="features__card-icon">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+                <path d="M14 4L14 8M14 20L14 24M4 14L8 14M20 14L24 14" stroke="var(--accent-olive)" stroke-width="1.5" stroke-linecap="round"/>
+                <circle cx="14" cy="14" r="6" stroke="var(--accent-olive)" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="features__card-title">Multi-store view</h3>
+            <p class="features__card-desc">
+              Manage inventory across multiple stores or channels by uploading separate CSVs.
+              Compare demand across sources. Available on Pro plan.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         PRICING
+         ============================================ -->
+    <section class="pricing" id="pricing">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">Pricing</p>
+          <h2 class="section-headline">Start with a 7-day free trial.<br />No credit card required.</h2>
+          <p class="section-sub">
+            Choose the plan that matches your store's size. Upgrade or cancel anytime.
+          </p>
+        </div>
+
+        <div class="pricing__grid">
+          <!-- Starter -->
+          <div class="pricing__card anim-fade">
+            <div class="pricing__card-header">
+              <h3 class="pricing__plan-name">Starter</h3>
+              <p class="pricing__plan-desc">For single-store sellers getting started with forecasting.</p>
+            </div>
+            <div class="pricing__price">
+              <span class="pricing__amount">$19</span>
+              <span class="pricing__period">/month</span>
+            </div>
+            <ul class="pricing__features-list">
+              <li>Single store</li>
+              <li>Up to 50 SKUs</li>
+              <li>Demand forecast per SKU</li>
+              <li>Reorder timing suggestions</li>
+              <li>CSV upload</li>
+            </ul>
+            <a href="#waitlist" class="btn btn--secondary pricing__cta" data-plan="starter">Start free trial</a>
+          </div>
+
+          <!-- Growth -->
+          <div class="pricing__card pricing__card--featured anim-fade">
+            <div class="pricing__badge">Most chosen</div>
+            <div class="pricing__card-header">
+              <h3 class="pricing__plan-name">Growth</h3>
+              <p class="pricing__plan-desc">For growing stores that need stockout risk visibility.</p>
+            </div>
+            <div class="pricing__price">
+              <span class="pricing__amount">$59</span>
+              <span class="pricing__period">/month</span>
+            </div>
+            <ul class="pricing__features-list">
+              <li>Single store</li>
+              <li>Up to 200 SKUs</li>
+              <li>Everything in Starter</li>
+              <li>Stockout risk alerts</li>
+              <li>SKU velocity tracking</li>
+              <li>Priority support</li>
+            </ul>
+            <a href="#waitlist" class="btn btn--primary pricing__cta" data-plan="growth">Start free trial</a>
+          </div>
+
+          <!-- Pro -->
+          <div class="pricing__card anim-fade">
+            <div class="pricing__card-header">
+              <h3 class="pricing__plan-name">Pro</h3>
+              <p class="pricing__plan-desc">For multi-channel sellers who need scenario planning.</p>
+            </div>
+            <div class="pricing__price">
+              <span class="pricing__amount">$99</span>
+              <span class="pricing__period">/month</span>
+            </div>
+            <ul class="pricing__features-list">
+              <li>Multiple stores / channels</li>
+              <li>Up to 500 SKUs</li>
+              <li>Everything in Growth</li>
+              <li>Scenario forecasting</li>
+              <li>Cross-store demand comparison</li>
+              <li>Onboarding assistance available</li>
+            </ul>
+            <a href="#waitlist" class="btn btn--secondary pricing__cta" data-plan="pro">Start free trial</a>
+          </div>
+        </div>
+
+        <p class="pricing__note anim-fade">
+          Need help getting started? Paid onboarding and setup assistance is available on any plan.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================
+         USE CASES
+         ============================================ -->
+    <section class="usecases" id="usecases">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">Who it's for</p>
+          <h2 class="section-headline">Built for small sellers,<br />not enterprise teams</h2>
+        </div>
+
+        <div class="usecases__grid">
+          <div class="usecases__card anim-fade">
+            <span class="usecases__tag">Shopify seller</span>
+            <h3 class="usecases__title">Single Shopify store, 30–100 SKUs</h3>
+            <p class="usecases__desc">
+              You export orders from Shopify as a CSV. You want to know which products will
+              need restocking in the next 2–4 weeks without manually tracking every item.
+            </p>
+          </div>
+
+          <div class="usecases__card anim-fade">
+            <span class="usecases__tag">Marketplace seller</span>
+            <h3 class="usecases__title">Amazon / Etsy seller managing inventory manually</h3>
+            <p class="usecases__desc">
+              You sell on one or more marketplaces and export sales data as CSV.
+              You want reorder timing recommendations and stockout warnings per SKU.
+            </p>
+          </div>
+
+          <div class="usecases__card anim-fade">
+            <span class="usecases__tag">Multi-channel</span>
+            <h3 class="usecases__title">Small brand selling across 2–3 channels</h3>
+            <p class="usecases__desc">
+              You manage separate inventories for different channels. You want to compare
+              demand across them and make purchasing decisions with a combined view.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         FAQ
+         ============================================ -->
+    <section class="faq" id="faq">
+      <div class="container">
+        <div class="section-header anim-fade">
+          <p class="section-label">FAQ</p>
+          <h2 class="section-headline">Common questions</h2>
+        </div>
+
+        <div class="faq__list">
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              What format does the CSV need to be in?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Stackwise accepts standard CSV exports from Shopify, Amazon, WooCommerce, and most
+                e-commerce platforms. At minimum, the file needs columns for order date, SKU or product
+                identifier, and quantity sold. We provide format guidelines during upload.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              Does Stackwise connect directly to my store?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                No. Stackwise works with CSV file uploads only. There is no automatic sync or
+                direct integration with Shopify, Amazon, or any other platform. You export your data
+                and upload it when you want fresh forecasts.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              How much historical data do I need?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                More data generally means better forecasts. We recommend at least 3 months of sales history.
+                If you have 6–12 months, seasonal patterns become visible. Stackwise will work with less,
+                but forecast confidence will be lower.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              How accurate are the forecasts?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Forecast accuracy depends on your data: volume, consistency, and history length.
+                We don't publish a blanket accuracy percentage because it varies per store. After your
+                first upload, Stackwise shows confidence levels for each SKU's projection.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              Do I need to provide my current stock levels?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                No. Demand forecasts and velocity metrics are generated from your sales CSV alone.
+                Stock levels are optional. If you provide them (via a second CSV or manual entry),
+                Stackwise will additionally calculate days to stockout, stock coverage, volatility classification,
+                risk status (On track / Watch / Reorder soon / Overdue),
+                and volatility-aware reorder quantity suggestions. Without stock data, these fields are not shown.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              Can I cancel anytime?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Yes. All plans are month-to-month. Cancel from your account settings at any time.
+                No contracts, no cancellation fees.
+              </p>
+            </div>
+          </details>
+
+          <details class="faq__item anim-fade">
+            <summary class="faq__question">
+              What happens after the free trial?
+              <span class="faq__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M5 8L10 13L15 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </summary>
+            <div class="faq__answer">
+              <p>
+                Your 7-day trial gives you full access to your chosen plan. If you don't subscribe before
+                it ends, your account pauses. Your data stays saved — you can come back and subscribe
+                whenever you're ready.
+              </p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================
+         FINAL CTA
+         ============================================ -->
+    <section class="waitlist" id="waitlist">
+      <div class="container">
+        <div class="waitlist__inner anim-fade">
+          <h2 class="waitlist__headline">Stop guessing.<br />Start forecasting.</h2>
+          <p class="waitlist__sub">
+            Enter your email to begin your 7-day free trial. No credit card required.
+          </p>
+          <form class="waitlist__form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='You\'re on the list!'; this.querySelector('button').disabled=true;">
+            <input class="waitlist__input" type="email" placeholder="you@yourstore.com" required aria-label="Email address" />
+            <button type="submit" class="btn btn--primary">Start free trial</button>
+          </form>
+          <p class="waitlist__note">No spam. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__brand">
+        <a href="/" class="footer__logo" aria-label="Stackwise home">
+          <span>Stackwise</span>
+        </a>
+        <p class="footer__tagline">Demand forecasting for small e-commerce.</p>
+        <a href="mailto:hello@stackwise.io" class="footer__link footer__contact">hello@stackwise.io</a>
+      </div>
+
+      <div class="footer__links">
+        <div class="footer__col">
+          <h4 class="footer__col-title">Product</h4>
+          <a href="try.html" class="footer__link">Try Stackwise</a>
+          <a href="#how-it-works" class="footer__link">How it works</a>
+          <a href="#features" class="footer__link">Features</a>
+          <a href="#pricing" class="footer__link">Pricing</a>
+          <a href="#faq" class="footer__link">FAQ</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container footer__bottom">
+      <p class="footer__copy">&copy; 2026 Stackwise. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="animations.js"></script>
+
+  <!-- Auth state for header -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    function updateHeaderUI(user) {
+      var isLoggedIn = !!user;
+
+      var navAuthOut = document.getElementById('nav-auth-out');
+      var navAuthIn = document.getElementById('nav-auth-in');
+      if (navAuthOut) navAuthOut.hidden = isLoggedIn;
+      if (navAuthIn) navAuthIn.hidden = !isLoggedIn;
+
+      var mobileAuthOut = document.getElementById('mobile-auth-out');
+      var mobileAuthIn = document.getElementById('mobile-auth-in');
+      if (mobileAuthOut) mobileAuthOut.hidden = isLoggedIn;
+      if (mobileAuthIn) mobileAuthIn.hidden = !isLoggedIn;
+    }
+
+    function bindLogout() {
+      var ids = ['btn-header-logout', 'btn-mobile-logout'];
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('click', function () {
+            window.supabaseClient.auth.signOut().then(function () {
+              window.location.reload();
+            });
+          });
+        }
+      });
+    }
+
+    function init() {
+      if (!window.supabaseClient) {
+        updateHeaderUI(null);
+        return;
+      }
+
+      window.supabaseClient.auth.getSession().then(function (result) {
+        var user = (result.data && result.data.session) ? result.data.session.user : null;
+        updateHeaderUI(user);
+      }).catch(function () {
+        updateHeaderUI(null);
+      });
+
+      window.supabaseClient.auth.onAuthStateChange(function (event, session) {
+        updateHeaderUI(session ? session.user : null);
+      });
+
+      bindLogout();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
+  </script>
+</body>
+</html>
